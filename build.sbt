@@ -28,7 +28,14 @@ resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 libraryDependencies ++= Seq(
   ws,
   specs2 % "test,it",
-  guice
+  guice,
+  "ai.x" %% "play-json-extensions" % "0.10.0", //for extended case class to json serialization features
+  "com.typesafe.play" %% "play-json" % "2.6.6",
+  "com.typesafe.play" %% "play-json-joda" % "2.6.6",
+  "org.json4s" %% "json4s-native" % "3.5.3", "org.json4s" %% "json4s-ext" % "3.5.3", //for json 2 xml conversion, to support xml as an alternative response medium as part of content negotiation
+  "io.swagger" %% "swagger-play2" % "1.6.0",
+  "org.webjars" %%  "webjars-play" % "2.6.1",
+  "org.webjars" % "swagger-ui" % "3.2.2"
 )
 
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
