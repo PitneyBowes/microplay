@@ -2,7 +2,6 @@
 package com.borderfree.micro.play.logging
 
 import org.specs2.mutable.Specification
-import org.specs2.mock.Mockito
 
 /**
   * Created with IntelliJ IDEA.
@@ -10,7 +9,7 @@ import org.specs2.mock.Mockito
   * Date: 12/17/2017
   * Time: 12:04 PM
   */
-class RequestIdGeneratorTest extends Specification with Mockito
+class RequestIdGeneratorTest extends Specification
 {
 
   "RequestIdGenerator" should

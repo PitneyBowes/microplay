@@ -1,6 +1,7 @@
 import _root_.wartremover.WartRemover.autoImport._
 
 name := "microplay"
+organization := "com.borderfree"
 version := System.getProperty("version", "1.0")
 scalaVersion := "2.12.4"
 
@@ -29,12 +30,12 @@ libraryDependencies ++= Seq(
   ws,
   specs2 % "test,it",
   guice,
-  "ai.x" %% "play-json-extensions" % "0.10.0", //for extended case class to json serialization features
-  "com.typesafe.play" %% "play-json" % "2.6.6",
-  "com.typesafe.play" %% "play-json-joda" % "2.6.6",
+//  "ai.x" %% "play-json-extensions" % "0.10.0", //for extended case class to json serialization features
+//  "com.typesafe.play" %% "play-json" % "2.6.6",
+//  "com.typesafe.play" %% "play-json-joda" % "2.6.6",
   "org.json4s" %% "json4s-native" % "3.5.3", "org.json4s" %% "json4s-ext" % "3.5.3", //for json 2 xml conversion, to support xml as an alternative response medium as part of content negotiation
   "io.swagger" %% "swagger-play2" % "1.6.0",
-  "org.webjars" %%  "webjars-play" % "2.6.1",
+//  "org.webjars" %% "webjars-play" % "2.6.1",
   "org.webjars" % "swagger-ui" % "3.2.2"
 )
 
@@ -44,7 +45,7 @@ buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, git.
 
 buildInfoPackage := "com.borderfree.micro.play"
 
-buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime)
+buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime, BuildInfoOption.Traits("com.borderfree.micro.play.services.BuildInfoMeta"))
 
 sourceDirectory in IntegrationTest := baseDirectory.value / "it"
 scalaSource in IntegrationTest := baseDirectory.value / "it"
