@@ -1,0 +1,5 @@
+[repositories]
+  local
+  maven-local
+  clever-maven-proxy-releases: https://artifactory-dev.bfretail.pitneycloud.com/artifactory/libs-release
+  clever-ivy-proxy-releases: https://artifactory-dev.bfretail.pitneycloud.com/artifactory/ivy-remote-repo, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
