@@ -18,16 +18,17 @@ trait BuildInfoLoader{
   def getBuildInfo: BuildInfoMeta
 }
 
-class BuildInfoLoaderImpl @Inject()(appConfiguration: AppConfiguration) extends BuildInfoLoader {
+class BuildInfoLoaderImpl @Inject()(appConfiguration: AppConfiguration, env:play.Environment ) extends BuildInfoLoader {
 
   private lazy val buildInfoClassName: String = appConfiguration.getOptional[String]("micro.build.info").getOrElse("com.borderfree.micro.play.BuildInfo")
 
   def getBuildInfo: BuildInfoMeta ={
-    val buildInfoClass = this.getClass.getClassLoader.loadClass(buildInfoClassName)
+    val buildInfoClass = env.classLoader().loadClass(buildInfoClassName)
     companionObj(ClassTag(buildInfoClass)).asInstanceOf[BuildInfoMeta]
   }
   private def companionObj[T](implicit tag : reflect.ClassTag[T] ): AnyRef = {
-    val c = Class.forName(  tag.runtimeClass.getName + "$")
+    val c = env.classLoader().loadClass(buildInfoClassName + "$")
+//    val c = env.classLoader().loadClass(tag.runtimeClass.getName + "$")
     c.getField("MODULE$").get(c)
   }
 }

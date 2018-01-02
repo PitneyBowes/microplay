@@ -2,7 +2,7 @@ import _root_.wartremover.WartRemover.autoImport._
 
 name := "microplay"
 organization := "com.borderfree"
-version := System.getProperty("version", "1.0")
+version := System.getProperty("version", "1.0.1")
 scalaVersion := "2.12.4"
 
 lazy val `microplay` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, /*SonarRunnerPlugin, */BuildInfoPlugin, GitVersioning)
@@ -38,13 +38,10 @@ libraryDependencies ++= Seq(
 //  "org.webjars" %% "webjars-play" % "2.6.1",
   "org.webjars" % "swagger-ui" % "3.2.2"
 )
-
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, git.gitHeadCommit)
-
 buildInfoPackage := "com.borderfree.micro.play"
-
 buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime, BuildInfoOption.Traits("com.borderfree.micro.play.services.BuildInfoMeta"))
 
 sourceDirectory in IntegrationTest := baseDirectory.value / "it"

@@ -13,8 +13,11 @@ import org.specs2.mutable.Specification
 class BuildInfoLoaderImplTest extends Specification with Mockito
 {
   val playAppConfiguration: PlayAppConfiguration = mock[PlayAppConfiguration]
-  val buildInfoLoaderImpl = new BuildInfoLoaderImpl(playAppConfiguration)
+  val playEnv: play.Environment = mock[play.Environment]
   playAppConfiguration.getOptional[String]("micro.build.info") returns None
+  playEnv.classLoader() returns this.getClass.getClassLoader
+  
+  val buildInfoLoaderImpl = new BuildInfoLoaderImpl(playAppConfiguration,playEnv)
   "BuildInfoLoaderImpl" should
     {
       "get Build Info" in
