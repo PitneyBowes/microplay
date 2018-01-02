@@ -5,7 +5,7 @@ def __JOB_PROPERTIES() {
             [$class: 'ParametersDefinitionProperty', parameterDefinitions: [
                     [$class: 'StringParameterDefinition', name: 'artifactory_user', defaultValue: 'upload', description: 'artifactory user'],
                     [$class: 'StringParameterDefinition', name: 'artifactory_pass', defaultValue: 'upload', description: 'artifactory password'],
-                    [$class: 'StringParameterDefinition', name: 'artifact_version', defaultValue: 'latest', description: 'the artifact version, leave blank to use the default'],
+                    [$class: 'StringParameterDefinition', name: 'artifact_version', defaultValue: 'latest', description: 'the artifact version'],
             ]
             ]
     ]
