@@ -41,8 +41,8 @@ libraryDependencies ++= Seq(
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, git.gitHeadCommit)
-buildInfoPackage := "com.borderfree.micro.play"
-buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime, BuildInfoOption.Traits("com.borderfree.micro.play.services.BuildInfoMeta"))
+buildInfoPackage := "com.borderfree.microplay"
+buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime, BuildInfoOption.Traits("com.borderfree.microplay.services.BuildInfoMeta"))
 
 sourceDirectory in IntegrationTest := baseDirectory.value / "it"
 scalaSource in IntegrationTest := baseDirectory.value / "it"
