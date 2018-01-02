@@ -1,8 +1,8 @@
-//import  wartremover.WartRemover.autoImport._
+import scala.sys.Prop
 
 name := "microplay"
 organization := "com.borderfree"
-version := System.getProperty("version", "1.0.1")
+version := System.getProperty("version", "1.0.0")
 scalaVersion := "2.12.4"
 
 lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, /*SonarRunnerPlugin, */BuildInfoPlugin, GitVersioning)
@@ -20,11 +20,25 @@ externalResolvers += "Java.net Maven2 Repository" at "http://download.java.net/m
 //externalResolvers += "Atlassian Releases" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/atlassian-repo"
 externalResolvers += "Artifactory Realm libs-shapshot" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/libs-snapshot"
 externalResolvers += "Artifactory Realm ext" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/ext-release-local"
-resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+externalResolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 
-//externalResolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
-      
-//val ITTest: sbt.Configuration =
+publishTo := Some("Artifactory Realm Publish" at "http://registry.bfretail.pitneycloud.com:8081/artifactory/libs-release-local")
+
+credentials += {
+  val artifactoryUser = Prop[String]("artifactory_user")
+  val artifactoryPassword = Prop[String]("artifactory_password")
+  if(artifactoryUser.isSet && artifactoryPassword.isSet)
+  {
+    println(s"publishing using artifactory_user=$artifactoryUser")
+    Credentials("Artifactory Realm", "registry.bfretail.pitneycloud.com", artifactoryUser.get, artifactoryUser.get)
+  }
+  else
+  {
+    println(s"loading publish credentials from ~/.ivy2/.credentials")
+    Credentials(Path.userHome / ".ivy2" / ".credentials")
+  }
+}
+
 
 libraryDependencies ++= Seq(
   ws,

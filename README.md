@@ -12,5 +12,5 @@ This library was not intended as a seed project. copy-pasting is discouraged
 2. import from git
 3. refresh sbt project
 4. run sbt compile ( required so BuildInfoPlugin will generate BuildInfo class)
-5. right click build.bst -> Run Play 2 App
+5. right click microplay-lib/build.bst -> Run Play 2 App
 6. on code changes - > compile (Ctrl F9) and refresh browser
