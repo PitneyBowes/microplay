@@ -15,7 +15,6 @@ externalResolvers += "Artifactory Realm ext" at "https://artifactory-dev.bfretai
 externalResolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 
 lazy val `microplay-lib` = project in file("microplay-lib")
-
 //lazy val `microplay-root` = (project in file(".")).aggregate(`microplay-lib`).settings(aggregate in publish := false)
-lazy val `microplay-root` = (project in file(".")).aggregate(`microplay-lib`).settings(aggregate in publish := false)
+lazy val `microplay-root` = project in file(".")
 

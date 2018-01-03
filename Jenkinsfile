@@ -15,30 +15,37 @@ __jobProperties(__JOB_PROPERTIES())
 
 timestamps {
     node('generic') {
-        checkout scm
-        branchId = buildUtils.getBranchId()
-        echo "branchId: $branchId"
-
+        def GIT_BRANCH_NAME = env.BRANCH_NAME
+        predefinedVersion = getVersion()
         if (!artifact_version || artifact_version == "latest") {
-            artifact_version = "${branchId}.${env.BUILD_NUMBER}"
+            artifact_version = "${predefinedVersion}-${env.BUILD_NUMBER}"
         }
         echo "artifact_version: $artifact_version"
-        if (!branchId) {
-            error message: "Cannot calculate branchId from ${env.BRANCH_NAME}"
+        echo "git branch: $GIT_BRANCH_NAME"
+        if(GIT_BRANCH_NAME != 'master'){
+            artifact_version+= ("-"+GIT_BRANCH_NAME)
+        }
+        currentBuild.displayName = artifact_version
+        def sbtOptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
+                "-Djdk.logging.allowStackWalkSearch=true " +
+                "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
+                "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
+
+        stage('Checkout') {
+            checkout scm
         }
         stage('Build, UnitTest, IntegrationTest') {
-            def sbtoptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
-                    "-Djdk.logging.allowStackWalkSearch=true " +
-                    "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
-                    "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
-            sh "sbt ${sbtoptions} test it:test"
+            sh "sbt ${sbtOptions} microplay-lib/test microplay-lib/it:test microplay-lib/publishLocal"
         }
+        //todo test dependant project
         stage('Publish') {
-            def sbtoptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
-                    "-Djdk.logging.allowStackWalkSearch=true " +
-                    "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
-                    "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
-            sh "sbt ${sbtoptions} microplay-lib/publish"
+            sh "sbt ${sbtOptions} microplay-lib/publish"
         }
     }
+}
+
+def getVersion() {
+    def version = readFile('version.txt').trim().split('\n')[0].trim()
+    println "version:${version}"
+    version
 }
