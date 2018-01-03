@@ -1,7 +1,6 @@
 def __JOB_PROPERTIES() {
     [
-            [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '30']],
-            [$class: 'DisableConcurrentBuildsJobProperty'],
+            [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '100']],
             [$class: 'ParametersDefinitionProperty', parameterDefinitions: [
                     [$class: 'StringParameterDefinition', name: 'artifactory_user', defaultValue: 'upload', description: 'artifactory user'],
                     [$class: 'StringParameterDefinition', name: 'artifactory_pass', defaultValue: 'upload', description: 'artifactory password'],
@@ -20,21 +19,26 @@ timestamps {
         branchId = buildUtils.getBranchId()
         echo "branchId: $branchId"
 
-        if (artifact_version == null || artifact_version == "latest") {
+        if (!artifact_version || artifact_version == "latest") {
             artifact_version = "${branchId}.${env.BUILD_NUMBER}"
         }
         echo "artifact_version: $artifact_version"
         if (!branchId) {
             error message: "Cannot calculate branchId from ${env.BRANCH_NAME}"
         }
-        stage('Build, UnitTest, Integration Test and Publish') {
-            dir('microplay-lib') {
-                def sbtoptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
-                        "-Djdk.logging.allowStackWalkSearch=true " +
-                        "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
-                        "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
-                sh "sbt ${sbtoptions} test it:test publish"
-            }
+        stage('Build, UnitTest, IntegrationTest') {
+            def sbtoptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
+                    "-Djdk.logging.allowStackWalkSearch=true " +
+                    "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
+                    "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
+            sh "sbt ${sbtoptions} test it:test"
+        }
+        stage('Publish') {
+            def sbtoptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
+                    "-Djdk.logging.allowStackWalkSearch=true " +
+                    "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
+                    "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
+            sh "sbt ${sbtoptions} microplay-lib/publish"
         }
     }
 }
