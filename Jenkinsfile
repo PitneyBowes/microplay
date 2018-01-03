@@ -16,12 +16,15 @@ __jobProperties(__JOB_PROPERTIES())
 timestamps {
     node('generic') {
         def GIT_BRANCH_NAME = env.BRANCH_NAME
+        echo "git branch: $GIT_BRANCH_NAME"
+        stage('Checkout') {
+            checkout scm
+        }
         predefinedVersion = getVersion()
         if (!artifact_version || artifact_version == "latest") {
             artifact_version = "${predefinedVersion}-${env.BUILD_NUMBER}"
         }
         echo "artifact_version: $artifact_version"
-        echo "git branch: $GIT_BRANCH_NAME"
         if(GIT_BRANCH_NAME != 'master'){
             artifact_version+= ("-"+GIT_BRANCH_NAME)
         }
@@ -30,10 +33,6 @@ timestamps {
                 "-Djdk.logging.allowStackWalkSearch=true " +
                 "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
                 "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
-
-        stage('Checkout') {
-            checkout scm
-        }
         stage('Build, UnitTest, IntegrationTest') {
             sh "sbt ${sbtOptions} microplay-lib/test microplay-lib/it:test microplay-lib/publishLocal"
         }
