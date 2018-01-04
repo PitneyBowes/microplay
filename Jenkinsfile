@@ -33,8 +33,10 @@ timestamps {
         }
         //todo test dependant project while passing new microplay version and using local artifact
         stage('Publish') {
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'artifactory-login', usernameVariable: 'DEPLOY_USERNAME', passwordVariable: 'DEPLOY_PASSWORD']]) {
-                sh "sbt ${sbtOptions} -Dartifactory_user=${DEPLOY_USERNAME} -Dartifactory_password=${DEPLOY_PASSWORD} microplay-lib/publish"
+            dir('microplay-lib') {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'artifactory-login', usernameVariable: 'DEPLOY_USERNAME', passwordVariable: 'DEPLOY_PASSWORD']]) {
+                    sh "sbt ${sbtOptions} -Dartifactory_user=${DEPLOY_USERNAME} -Dartifactory_password=${DEPLOY_PASSWORD} publish"
+                }
             }
         }
     }

@@ -1,5 +1,3 @@
-import scala.sys.Prop
-
 name := "microplay"
 organization := "com.borderfree"
 version := System.getProperty("version", "1.0.0")
