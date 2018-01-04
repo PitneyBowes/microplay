@@ -41,7 +41,7 @@ timestamps {
 }
 
 def getVersion() {
-    def version = readFile('version.txt').trim().split('\n').getAt(0).trim()
+    def version = readFile('version.txt').trim().split('\n')[0].trim()
     println "version:${version}"
     version
 }
