@@ -22,24 +22,6 @@ externalResolvers += "Artifactory Realm libs-shapshot" at "https://artifactory-d
 externalResolvers += "Artifactory Realm ext" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/ext-release-local"
 externalResolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 
-publishTo := Some("Artifactory Realm Publish" at "http://registry.bfretail.pitneycloud.com:8081/artifactory/libs-release-local")
-
-credentials += {
-  val artifactoryUser = Prop[String]("artifactory_user")
-  val artifactoryPassword = Prop[String]("artifactory_password")
-  if(artifactoryUser.isSet && artifactoryPassword.isSet)
-  {
-    println(s"publishing using artifactory_user=$artifactoryUser")
-    Credentials("Artifactory Realm", "registry.bfretail.pitneycloud.com", artifactoryUser.get, artifactoryUser.get)
-  }
-  else
-  {
-    println(s"loading publish credentials from ~/.ivy2/.credentials")
-    Credentials(Path.userHome / ".ivy2" / ".credentials")
-  }
-}
-
-
 libraryDependencies ++= Seq(
   ws,
   specs2 % "test,it",
