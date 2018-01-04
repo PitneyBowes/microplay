@@ -27,9 +27,7 @@ timestamps {
             artifact_version+= ("-"+GIT_BRANCH_NAME)
         }
         currentBuild.displayName = artifact_version
-        def sbtOptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
-                "-Djdk.logging.allowStackWalkSearch=true " +
-                "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " + artifactoryOptions
+        def sbtOptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} -Djdk.logging.allowStackWalkSearch=true -Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true "
         stage('Build, UnitTest, IntegrationTest') {
             sh "sbt ${sbtOptions} microplay-lib/test microplay-lib/it:test microplay-lib/publishLocal"
         }
@@ -43,7 +41,7 @@ timestamps {
 }
 
 def getVersion() {
-    def version = readFile('version.txt').trim().split('\n')[0].trim()
+    def version = readFile('version.txt').trim().split('\n').getAt(0).trim()
     println "version:${version}"
     version
 }
