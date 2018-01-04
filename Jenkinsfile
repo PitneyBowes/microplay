@@ -31,14 +31,15 @@ timestamps {
         currentBuild.displayName = artifact_version
         def sbtOptions = "-Dsbt.log.noformat=true -Dversion=${artifact_version} " +
                 "-Djdk.logging.allowStackWalkSearch=true " +
-                "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " +
-                "-Dartifactory_user=${artifactory_user} -Dartifactory_password=${artifactory_pass}"
+                "-Dsbt.repository.config=.sbt/repositories -Dsbt.override.build.repos=true -Dsbt.override.build.repos=true " + artifactoryOptions
         stage('Build, UnitTest, IntegrationTest') {
             sh "sbt ${sbtOptions} microplay-lib/test microplay-lib/it:test microplay-lib/publishLocal"
         }
-        //todo test dependant project
+        //todo test dependant project while passing new microplay version and using local artifact
         stage('Publish') {
-            sh "sbt ${sbtOptions} microplay-lib/publish"
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'artifactory-login', usernameVariable: 'DEPLOY_USERNAME', passwordVariable: 'DEPLOY_PASSWORD']]) {
+                sh "sbt ${sbtOptions} -Dartifactory_user=${DEPLOY_USERNAME} -Dartifactory_password=${DEPLOY_PASSWORD} microplay-lib/publish"
+            }
         }
     }
 }
