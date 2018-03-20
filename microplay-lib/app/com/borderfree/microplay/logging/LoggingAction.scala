@@ -19,17 +19,10 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
 {
 
   val REQUEST_BODY = "REQUEST_BODY"
-  val REQUEST_HEADERS = "REQUEST_HEADERS"
-  val REQUEST_TIME_PROCESS = "REQUEST_TIME_PROCESS"
   val RESPONSE_BODY = "RESPONSE_BODY"
-  val RESPONSE_HEADERS = "RESPONSE_HEADERS"
 
-  case class ActionData(action: String, actionType: String, data: String)
-  {
-    def keyValueStr: String =
-    {
-      s"action=$action actionType=$actionType data=$data"
-    }
+  val FormatMsg: (String, String, String) => String = (action: String, actionType: String, data: String)=>{
+    s"action=$action actionType=$actionType data=$data"
   }
 
   override def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] =
@@ -50,14 +43,10 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
 
     def logAction(actionType: String, data: String) =
     {
-      logger.info(ActionData(request.uri, actionType, data))
+      logger.info(FormatMsg(request.uri, actionType, data))
     }
-//    mdcManager.setCorrelationId(request.headers.get(X_CORRELATION_ID_HEADER)) // disabling request chaining correlation id as this is an external api
+//    mdcManager.setCorrelationId(request.headers.get(X_CORRELATION_ID_HEADER))     //todo set correlationId as recieved from caller header if exists. add a configuration option to ignore received correlationId ( might be useful in external apis)
     mdcManager.putCorrelationId(None)
-
-    val start = System.currentTimeMillis()
-
-    logAction(REQUEST_HEADERS, request.headers.toSimpleMap.mkString(", "))
     logAction(REQUEST_BODY,
       {
         request.body match
@@ -86,17 +75,12 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
 
     resultWithCorrelationIdHeader onComplete
       {
-
         case Success(result) =>
-          val end = System.currentTimeMillis() - start
-          logAction(actionType = REQUEST_TIME_PROCESS, data = end.toString)
           result.body.consumeData(mat) onComplete
             {
               case Success(bytesString) =>
                 val body = bytesString.decodeString(retrieveCharset(result))
-                logAction(RESPONSE_HEADERS, data = result.header.headers.mkString(", "))
                 logAction(actionType = RESPONSE_BODY, data = body)
-
               case Failure(e) =>
                 logger.error("error occurred:", e)
             }

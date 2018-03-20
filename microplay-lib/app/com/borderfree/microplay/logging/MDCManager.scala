@@ -17,6 +17,7 @@ trait MDCManager
 {
   def putCorrelationId(maybeCorrelationId: Option[String]):String
   def getCorrelationId(): String
+  def getCorrelationKey(): String
   def getForwardCorrelationIdHeaderName(): String
   def getReturnedCorrelationIdHeaderName(): String
   def clear(): Unit
@@ -24,19 +25,19 @@ trait MDCManager
 
 class Slf4JMDCManager @Inject()(appConfiguration: AppConfiguration) extends MDCManager
 {
-  val CORRELATION_ID = "CORRELATION_ID"
+  val CORRELATION_ID_KEY = "CORRELATION_ID"
   lazy val ForwardCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.forward.header-name")
   lazy val ReturnedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.returned.header-name")
 
   override def putCorrelationId(maybeCorrelationId: Option[String]) = {
     val correlationId = maybeCorrelationId.getOrElse(RequestIdGenerator.generate())
-    MDC.put(CORRELATION_ID, CORRELATION_ID + "=" + correlationId)
+    MDC.put(CORRELATION_ID_KEY, CORRELATION_ID_KEY + "=" + correlationId)
     correlationId
   }
 
   override def getCorrelationId() = {
-    Option(MDC.get(CORRELATION_ID)) match{
-      case Some(correlationIdEntry)=>correlationIdEntry.replace(CORRELATION_ID+"=","")
+    Option(MDC.get(CORRELATION_ID_KEY)) match{
+      case Some(correlationIdEntry)=>correlationIdEntry.replace(CORRELATION_ID_KEY+"=","")
       case None => putCorrelationId(None)
     }
   }
@@ -47,4 +48,6 @@ class Slf4JMDCManager @Inject()(appConfiguration: AppConfiguration) extends MDCM
 
   override def getForwardCorrelationIdHeaderName() = ForwardCorrelationIdHeaderName
   override def getReturnedCorrelationIdHeaderName() = ReturnedCorrelationIdHeaderName
+
+  override def getCorrelationKey() = CORRELATION_ID_KEY
 }
