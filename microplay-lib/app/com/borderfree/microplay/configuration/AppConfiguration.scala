@@ -6,6 +6,8 @@ import com.borderfree.microplay.logging.LogSupport
 import com.google.inject.ImplementedBy
 import com.typesafe.config.Config
 import play.api.{ConfigLoader, Configuration}
+
+import scala.concurrent.duration.Duration
 /**
  * Created with IntelliJ IDEA.
  * User: yaron.yamin
@@ -26,6 +28,7 @@ trait AppConfiguration
   def getMilliseconds(key: String): Long
   def get[A](key: String)(implicit loader: ConfigLoader[A]): A
   def getOptional[A](key: String)(implicit loader: ConfigLoader[A]): Option[A]
+  def getDuration(key: String): Duration
 }
 
 //Thin wrapper around Play configuration. motivation: decouple from play configuration api as much as possible.
@@ -54,4 +57,6 @@ class PlayAppConfiguration @Inject()(configuration: Configuration) extends AppCo
   override def get[A](key: String)(implicit loader: ConfigLoader[A]): A = configuration.get[A](key)
 
   override def getOptional[A](key: String)(implicit loader: ConfigLoader[A]): Option[A] = configuration.getOptional[A](key)
+
+  override def getDuration(key: String): Duration = configuration.get[Duration](key)
 }

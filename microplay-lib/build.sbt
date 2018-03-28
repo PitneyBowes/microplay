@@ -6,7 +6,8 @@ scalaVersion := "2.12.4"
 lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, /*SonarRunnerPlugin, */BuildInfoPlugin, GitVersioning)
 
 
-externalResolvers :=  Seq("Artifactory Realm libs-release" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/libs-release")
+externalResolvers := Seq(Resolver.file("local", file(Path.userHome.absolutePath + "/.ivy2/cache"))(Resolver.ivyStylePatterns))
+externalResolvers += "Artifactory Realm libs-release" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/libs-release"
 //externalResolvers += Resolver.sonatypeRepo("public")
 //externalResolvers += Resolver.sonatypeRepo("snapshots")
 externalResolvers += "scalaz-bintray" at "https://artifactory-dev.bfretail.pitneycloud.com/artifactory/scalaz-bintray"
