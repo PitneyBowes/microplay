@@ -48,7 +48,6 @@ trait ApiControllerActions[ERR] extends LogSupport with HttpContentNegotiator wi
 //  }
 //
   protected def handleRequest[RES: json.Writes : ClassTag](invokeService: () => Future[RES])(implicit request: Request[Any]): Future[Result] = {
-    logger.debug("handling api request")
     invokeService() map {apiResponse=>renderResult(Ok, apiResponse)} recover {
         case err: Throwable => renderErrorResponse(err)
       }
