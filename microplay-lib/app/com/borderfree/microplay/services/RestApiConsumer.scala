@@ -54,7 +54,7 @@ trait RestApiConsumer
             Json.parse(response.body).as[RES]
 
           case httpStatus =>
-            logger.error(s"got error $httpStatus api response within $callDuration millis: ${response.body}")
+            logger.error(s"error calling api endpoint - $apiMethodUriSuffix. got response within $callDuration millis with status $httpStatus: ${response.body}")
             throw createExceptionFromErrorResponse(httpStatus, response, apiMethodUriSuffix)
         }
     }
