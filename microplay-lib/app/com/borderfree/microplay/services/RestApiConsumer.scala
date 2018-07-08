@@ -50,15 +50,16 @@ trait RestApiConsumer
         val callDuration = Calendar.getInstance().getTimeInMillis - start
         response.status match {
           case status if ValidHttpResponses.contains(status) =>
-            logger.info(s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis: ${response.body}")
+            logger.info(s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis: ${if(shouldTraceResponseBody(apiMethodUriSuffix))response.body}")
             Json.parse(response.body).as[RES]
-
           case httpStatus =>
             logger.error(s"error calling api endpoint - $apiMethodUriSuffix. got response within $callDuration millis with status $httpStatus: ${response.body}")
             throw createExceptionFromErrorResponse(httpStatus, response, apiMethodUriSuffix)
         }
     }
   }
+
+  protected def shouldTraceResponseBody(apiMethodUriSuffix: String): Boolean = true
 
   protected def createExceptionFromErrorResponse[RES <: Any : Reads](httpStatus: Int, response: WSResponse, apiMethodUriSuffix: String): Exception =
   {
