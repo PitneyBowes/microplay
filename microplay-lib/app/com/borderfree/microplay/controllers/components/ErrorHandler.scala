@@ -23,10 +23,7 @@ trait ErrorHandler[ERR]{
   def renderErrorResponse(err: Throwable)(implicit request: RequestHeader): Result =
   {
     logger.error("handling error", err)
-    val tuple: (Status, ERR) = mapExceptionToErrorResponse(err)
-    tuple match
-    {
-      case (httpStatus, errorResponse) => renderResult(httpStatus, errorResponse)
-    }
+    val (httpStatus, errorResponse) = mapExceptionToErrorResponse(err)
+    renderResult(httpStatus, errorResponse)
   }
 }
