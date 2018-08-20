@@ -44,7 +44,7 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
     def logAction(actionType: String, data: String) =
     {
       if(!request.uri.endsWith( "health")) {
-        logger.debug(FormatMsg(request.uri, actionType, data))
+        logger.info(FormatMsg(request.uri, actionType, data))
       }
     }
 //    mdcManager.setCorrelationId(request.headers.get(X_CORRELATION_ID_HEADER))     //todo set correlationId as recieved from caller header if exists. add a configuration option to ignore received correlationId ( might be useful in external apis)
