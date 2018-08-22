@@ -31,13 +31,13 @@ class Slf4JMDCManager @Inject()(appConfiguration: AppConfiguration) extends MDCM
 
   override def putCorrelationId(maybeCorrelationId: Option[String]) = {
     val correlationId = maybeCorrelationId.getOrElse(RequestIdGenerator.generate())
-    MDC.put(CORRELATION_ID_KEY, CORRELATION_ID_KEY + "=" + correlationId)
+    MDC.put(CORRELATION_ID_KEY, correlationId)
     correlationId
   }
 
   override def getCorrelationId() = {
     Option(MDC.get(CORRELATION_ID_KEY)) match{
-      case Some(correlationIdEntry)=>correlationIdEntry.replace(CORRELATION_ID_KEY+"=","")
+      case Some(correlationIdEntry)=>correlationIdEntry
       case None => putCorrelationId(None)
     }
   }
