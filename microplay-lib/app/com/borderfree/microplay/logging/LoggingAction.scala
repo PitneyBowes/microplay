@@ -82,7 +82,7 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
             {
               case Success(bytesString) =>
                 val body = bytesString.decodeString(retrieveCharset(result))
-                logAction(actionType = RESPONSE_BODY, data = body)
+                logAction(actionType = RESPONSE_BODY, data =  if (logger.isDebugEnabled) body else "")
               case Failure(e) =>
                 logger.error("error occurred:", e)
             }
