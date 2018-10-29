@@ -1,9 +1,8 @@
 package com.borderfree.microplay.logging
 
-import javax.inject.Inject
-
 import akka.stream._
-import com.borderfree.microplay.logging.LoggerUtils._
+import com.borderfree.microplay.configuration.AppConfiguration
+import javax.inject.Inject
 import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -15,11 +14,12 @@ import scala.util.{Failure, Success}
   * Date: 1/14/16
   * Time: 1:23 PM
   */
-class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: ExecutionContext,parser: BodyParsers.Default, mdcManager:MDCManager) extends ActionBuilderImpl(parser) with LogSupport
+class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyParsers.Default, mdcManager:MDCManager)(implicit val mat: Materializer , implicit val ec: ExecutionContext) extends ActionBuilderImpl(parser) with LogSupport
 {
 
   val REQUEST_BODY = "REQUEST_BODY"
   val RESPONSE_BODY = "RESPONSE_BODY"
+  lazy val RequestedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.requested.header-name")
 
   val FormatMsg: (String, String, String) => String = (action: String, actionType: String, data: String)=>{
     s"action=$action actionType=$actionType data=$data"
@@ -47,8 +47,7 @@ class LoggingAction @Inject()(implicit val mat: Materializer , implicit val ec: 
         logger.info(FormatMsg(request.uri, actionType, data))
       }
     }
-//    mdcManager.setCorrelationId(request.headers.get(X_CORRELATION_ID_HEADER))     //todo set correlationId as recieved from caller header if exists. add a configuration option to ignore received correlationId ( might be useful in external apis)
-    mdcManager.putCorrelationId(None)
+    mdcManager.putCorrelationId(request.headers.get(RequestedCorrelationIdHeaderName)) //todo add a configuration option to ignore received correlationId and set a fresh one instead ( might be useful in external apis)
     logAction(REQUEST_BODY,
       {
         request.body match

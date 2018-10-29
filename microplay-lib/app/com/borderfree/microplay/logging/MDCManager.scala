@@ -15,7 +15,7 @@ import org.slf4j.MDC
 @ImplementedBy(classOf[Slf4JMDCManager])
 trait MDCManager
 {
-  def putCorrelationId(maybeCorrelationId: Option[String]):String
+  def putCorrelationId(maybeCorrelationId: Option[String]=None):String
   def getCorrelationId(): String
   def getCorrelationKey(): String
   def getForwardCorrelationIdHeaderName(): String
@@ -29,7 +29,7 @@ class Slf4JMDCManager @Inject()(appConfiguration: AppConfiguration) extends MDCM
   lazy val ForwardCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.forward.header-name")
   lazy val ReturnedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.returned.header-name")
 
-  override def putCorrelationId(maybeCorrelationId: Option[String]) = {
+  override def putCorrelationId(maybeCorrelationId: Option[String]=None) = {
     val correlationId = maybeCorrelationId.getOrElse(RequestIdGenerator.generate())
     MDC.put(CORRELATION_ID_KEY, correlationId)
     correlationId

@@ -1,7 +1,7 @@
 package com.borderfree.microplay.logging
 
 import play.api.Logger
-import scala.language.reflectiveCalls
+
 /**
  * Created by IntelliJ IDEA
  * User: Anatoly.Libman
