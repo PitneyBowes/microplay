@@ -4,7 +4,7 @@ import com.borderfree.microplay.common.PlayFakeAppSpecification
 import play.api.test._
 
 class HealthCheckControllerTest extends PlayFakeAppSpecification{
-
+  sequential
   "HealthCheckController" should {
 //    "health end point" in new WithApplication(getFakeApp) {
     "health end point" in new WithApplication {

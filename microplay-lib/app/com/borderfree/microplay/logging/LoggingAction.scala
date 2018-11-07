@@ -1,6 +1,7 @@
 package com.borderfree.microplay.logging
 
 import akka.stream._
+import akka.util.ByteString
 import com.borderfree.microplay.configuration.AppConfiguration
 import javax.inject.Inject
 import play.api.mvc._
@@ -21,10 +22,7 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
   lazy val RequestedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.requested.header-name")
   lazy val ExcludedUrisForResponseBodyTracing: Set[String] = appConfiguration.getOptional[String]("micro.trace.response-body.exclude-uris").map(_.split(",").toSet).toSet.flatten
   lazy val ExcludedUrisForRequestBodyTracing: Set[String] = appConfiguration.getOptional[String]("micro.trace.request-body.exclude-uris").map(_.split(",").toSet).toSet.flatten
-
-  val FormatMsg: (String, String, String) => String = (action: String, actionType: String, data: String)=>{
-    s"action=$action actionType=$actionType data=$data"
-  }
+  lazy val MaxResponseBodyBytesTraced: Int = appConfiguration.getInt("micro.trace.response-body.max-bytes")
 
   override def invokeBlock[A](request: Request[A], block: Request[A] => Future[Result]): Future[Result] =
   {
@@ -42,13 +40,13 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
         logger.error("exception while invoking request handler", ex)
         mdcManager.clear()
     }
-    resultWithCorrelationIdHeader foreach{ result =>
-      if (shouldTraceResponseBody(request)){
-        result.body.consumeData map { bytesString =>
-          logAction(request,actionType = RESPONSE_BODY, data = bytesString.decodeString(resolveCharset(result)))
+    resultWithCorrelationIdHeader foreach { result =>
+      if (shouldTraceResponseBody(request)) {
+          consumeResponseBody(result) map { bytesString =>
+            logAction(request, actionType = RESPONSE_BODY, data = bytesString.decodeString(resolveCharset(result)))
+          }
         }
       }
-    }
     mdcManager.clear()
     resultWithCorrelationIdHeader
   }
@@ -63,7 +61,7 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
 
   protected def logAction[A](request: Request[A], actionType: String, data: String): Unit =
   {
-    logger.debug(FormatMsg(request.uri, actionType, data))
+    logger.debug(s"action=${request.uri} actionType=$actionType data=$data")
   }
 
   protected def resolveCharset(result: Result): String =
@@ -76,5 +74,8 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
       "UTF-8"
     }
   }
-
+  protected def consumeResponseBody[A](result: Result): Future[ByteString] = {
+      result.body.dataStream.map(bts => bts.slice(0,MaxResponseBodyBytesTraced)).runFold(ByteString.empty)(_ ++ _)
+  }
 }
+
