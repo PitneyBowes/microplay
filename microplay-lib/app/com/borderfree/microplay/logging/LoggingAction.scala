@@ -75,7 +75,14 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
     }
   }
   protected def consumeResponseBody[A](result: Result): Future[ByteString] = {
-      result.body.dataStream.map(bts => bts.slice(0,MaxResponseBodyBytesTraced)).runFold(ByteString.empty)(_ ++ _)
+      result.body.dataStream.map { bts =>
+        if (bts.size > MaxResponseBodyBytesTraced) {
+          bts.slice(0, MaxResponseBodyBytesTraced) ++ ByteString("...<LARGE_RESPONSE_TRIMMED>")
+        }
+        else{
+          bts
+        }
+      }.runFold(ByteString.empty)(_ ++ _)
   }
 }
 
