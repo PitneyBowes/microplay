@@ -29,9 +29,8 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
     { result =>
       val endTime = System.currentTimeMillis
       val requestTime = endTime - startTime
-      logger.info(s"CORRELATION_ID=${result.header.headers.getOrElse(mdcManager.getReturnedCorrelationIdHeaderName(), "")} RequestMethod=${requestHeader.method} ${requestHeader.uri} RequestDuration=${requestTime}ms ResponseStatus=${result.header.status} RequestHeaders=${requestHeader.headers.headers.mkString(",")} ResponseHeaders=${result.header.headers.mkString(",")}")
-      ProcessingTimeHeaderEnabled match
-      {
+      logger.info(s"RequestMethod=${requestHeader.method} ${requestHeader.uri} RequestDuration=${requestTime}ms ResponseStatus=${result.header.status} RequestHeaders=${requestHeader.headers.headers.mkString(",")} ResponseHeaders=${result.header.headers.mkString(",")}")
+      ProcessingTimeHeaderEnabled match {
         case true => result.withHeaders(ProcessingTimeHeaderName -> requestTime.toString)
         case false => result
       }
