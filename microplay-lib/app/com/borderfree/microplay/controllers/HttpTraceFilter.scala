@@ -1,7 +1,8 @@
 package com.borderfree.microplay.controllers
 
-import javax.inject.Inject
+import java.net.InetAddress
 
+import javax.inject.Inject
 import akka.stream.Materializer
 import com.borderfree.microplay.configuration.AppConfiguration
 import com.borderfree.microplay.logging.{LogSupport, MDCManager}
@@ -20,6 +21,8 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
 {
   lazy val ProcessingTimeHeaderName: String = appConfiguration.getString("micro.processing-time.header.name")
   lazy val ProcessingTimeHeaderEnabled: Boolean = appConfiguration.getBoolean("micro.processing-time.header.enabled")
+  lazy val HandlingHostHeaderName: String = appConfiguration.getString("micro.handling-host.header.name")
+  lazy val HandlingHostHeaderEnabled: Boolean = appConfiguration.getBoolean("micro.handling-host.header.enabled")
 
   def apply(nextFilter: RequestHeader => Future[Result])
            (requestHeader: RequestHeader): Future[Result] =
@@ -27,13 +30,27 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
     val startTime = System.currentTimeMillis
     nextFilter(requestHeader).map
     { result =>
-      val endTime = System.currentTimeMillis
-      val requestTime = endTime - startTime
-      logger.info(s"RequestMethod=${requestHeader.method} ${requestHeader.uri} RequestDuration=${requestTime}ms ResponseStatus=${result.header.status} RequestHeaders=${requestHeader.headers.headers.mkString(",")} ResponseHeaders=${result.header.headers.mkString(",")}")
-      ProcessingTimeHeaderEnabled match {
-        case true => result.withHeaders(ProcessingTimeHeaderName -> requestTime.toString)
-        case false => result
-      }
+      val handlingDurationMillis = System.currentTimeMillis - startTime
+      logger.info(s"RequestMethod=${requestHeader.method} ${requestHeader.uri} RequestDuration=${handlingDurationMillis}ms ResponseStatus=${result.header.status} RequestHeaders=${requestHeader.headers.headers.mkString(",")} ResponseHeaders=${result.header.headers.mkString(",")}")
+      addHandlingHostHeader(addHandlingTimeHeader(result, handlingDurationMillis))
+    }
+  }
+
+  private def addHandlingTimeHeader(result: Result, requestTime: Long) = {
+    if (ProcessingTimeHeaderEnabled) {
+      result.withHeaders(ProcessingTimeHeaderName -> requestTime.toString)
+    }
+    else {
+      result
+    }
+  }
+
+  private def addHandlingHostHeader(result: Result) = {
+    if (HandlingHostHeaderEnabled) {
+      result.withHeaders(HandlingHostHeaderName -> InetAddress.getLocalHost.getHostName)
+    }
+    else {
+      result
     }
   }
 }
