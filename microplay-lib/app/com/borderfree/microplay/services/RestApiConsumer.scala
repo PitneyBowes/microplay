@@ -38,7 +38,7 @@ trait RestApiConsumer
   }
 
   protected def executePOST[REQ <: Any : Writes, RES <: Any : Reads](apiMethodUriSuffix: String, Any: REQ): Future[RES] = {
-    logger.info(s"api $apiMethodUriSuffix request: " + Json.toJson(Any))
+    logger.debug(s"api $apiMethodUriSuffix request: " + Json.toJson(Any))
     execute("POST", apiMethodUriSuffix, prepareRequest(apiMethodUriSuffix).withBody[REQ](Any).withHttpHeaders((HeaderNames.CONTENT_TYPE, MimeTypes.JSON)))
   }
 
@@ -50,7 +50,7 @@ trait RestApiConsumer
         val callDuration = Calendar.getInstance().getTimeInMillis - start
         response.status match {
           case status if ValidHttpResponses.contains(status) =>
-            logger.info(s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis: ${if(shouldTraceResponseBody(apiMethodUriSuffix))response.body}")
+            logger.debug(s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis: ${if(shouldTraceResponseBody(apiMethodUriSuffix))response.body}")
             Json.parse(response.body).as[RES]
           case httpStatus =>
             logger.error(s"error calling api endpoint - $apiMethodUriSuffix. got response within $callDuration millis with status $httpStatus: ${response.body}")
