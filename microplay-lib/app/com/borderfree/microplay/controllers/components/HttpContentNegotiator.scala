@@ -18,7 +18,18 @@ import scala.xml.NodeSeq
 trait HttpContentNegotiator extends AcceptExtractors
 {
   this: Results with MediaConverter =>
-  val bodyParsers: PlayBodyParsers
+
+  private val bodyParsers: PlayBodyParsers = play.api.mvc.BodyParsers.parse
+  private val jsonAndXmlBodyParser: BodyParser[Any] = bodyParsers.using {
+    request =>
+      request.contentType.map(_.toLowerCase(Locale.ENGLISH)) match
+      {
+        case Some("application/xml") | Some("text/xml") => bodyParsers.xml
+        case _ => bodyParsers.tolerantJson;
+      }
+  }
+
+  def bodyParser(): BodyParser[Any] = jsonAndXmlBodyParser
 
   def bodyConverter[REQ: json.Reads : ClassTag](request: Request[Any]): REQ = deSerialize(request.body)
 
@@ -35,16 +46,6 @@ trait HttpContentNegotiator extends AcceptExtractors
           case _ => throw new Exception("Expecting XML request with root element: "+rootName)
         })
     }
-  }
-
-  val bodyParser: BodyParser[Any] = bodyParsers.using
-  {
-    request =>
-      request.contentType.map(_.toLowerCase(Locale.ENGLISH)) match
-      {
-        case Some("application/xml") | Some("text/xml") => bodyParsers.xml
-        case _ => bodyParsers.tolerantJson;
-      }
   }
 
   def renderResult[T: Writes](httpStatus: Status, response: T)(implicit request: RequestHeader): Result = serialize(response, request).fold(x => httpStatus(x), x => httpStatus(x))

@@ -31,7 +31,7 @@ trait ApiControllerActions[ERR] extends LogSupport with HttpContentNegotiator wi
   }
 
   protected def apiAction[REQ: json.Reads : ClassTag, RES: json.Writes : ClassTag](apiCall: REQ => Future[RES]): Action[Any] = {
-    loggingAction.async(bodyParser) { implicit request: Request[Any] => handleRequest{() => apiCall(bodyConverter(request))} }
+    loggingAction.async(bodyParser()) { implicit request: Request[Any] => handleRequest{() => apiCall(bodyConverter(request))} }
   }
 
 //  object SecuredAction extends ActionBuilder[Request] {
@@ -48,7 +48,7 @@ trait ApiControllerActions[ERR] extends LogSupport with HttpContentNegotiator wi
 //  }
 //
   protected def handleRequest[RES: json.Writes : ClassTag](invokeService: () => Future[RES])(implicit request: Request[Any]): Future[Result] = {
-    invokeService() map {apiResponse=>renderResult(Ok, apiResponse)} recover {
+    invokeService() map {apiResponse=> renderResult(Ok, apiResponse)} recover {
         case err: Throwable => renderErrorResponse(err)
       }
     }
