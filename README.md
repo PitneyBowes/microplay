@@ -22,8 +22,12 @@ version format:
  
 #### Upgrading from 2.6.7.x to 2.6.20.x
 
-1. upgrade play plugin in `plugins.sbt`: `addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.20")`. it's recommended to upgrade all sbt plugins - please refer to `plugins.sbt` in this project
-2. its recommended to upgrade sbt to 1.2.x as well. For reference, please refer to commit - [microplay upgrade in bfx-police](http://dbygitmsprod.pbi.global.pvt/borderfree/BFX2/bfx-police/commit/9f59685e0b9f0e72f3813a5cbabaed78261b81c3) - that includes all relevant changes
+1. upgrade play plugin in `plugins.sbt`: `addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.20")`.
+2. it's recommended to upgrade all sbt plugins - please refer to `plugins.sbt` in this project. in such update - `jenkinsfile` - rename the application package sbt task from `universal:package-zip-tarball` to `universal:packageZipTarball`
+3. its recommended to upgrade sbt to 1.2.x as well.
+4. For reference, please refer to these commits that includes all relevant changes mentioned above:
+http://dbygitmsprod.pbi.global.pvt/borderfree/BFX2/bfx-police/commit/9f59685e0b9f0e72f3813a5cbabaed78261b81c3,
+http://dbygitmsprod.pbi.global.pvt/borderfree/BFX2/bfx-police/commit/be9718357b491d12134f2b2d18bef8ab661d42c4
 
 #### IJ IDEA Project setup:
 1. verify PlayFramework support plugin installed
