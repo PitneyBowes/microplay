@@ -1,7 +1,7 @@
 name := "microplay"
 organization := "com.borderfree"
 version := System.getProperty("version", "1.0.0")
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.8"
 
 lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, /*SonarRunnerPlugin, */BuildInfoPlugin, GitVersioning)
 
