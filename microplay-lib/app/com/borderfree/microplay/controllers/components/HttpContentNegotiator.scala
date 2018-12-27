@@ -18,6 +18,7 @@ import scala.xml.NodeSeq
 trait HttpContentNegotiator extends AcceptExtractors
 {
   this: Results with MediaConverter =>
+  val bodyParsers: PlayBodyParsers
 
   def bodyConverter[REQ: json.Reads : ClassTag](request: Request[Any]): REQ = deSerialize(request.body)
 
@@ -36,7 +37,6 @@ trait HttpContentNegotiator extends AcceptExtractors
     }
   }
 
-  private val bodyParsers: PlayBodyParsers = play.api.mvc.BodyParsers.parse
   val bodyParser: BodyParser[Any] = bodyParsers.using
   {
     request =>
