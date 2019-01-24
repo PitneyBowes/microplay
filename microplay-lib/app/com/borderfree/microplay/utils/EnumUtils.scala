@@ -35,4 +35,5 @@ object EnumUtils
   implicit def enumFormat[E <: Enumeration](enum: E): Format[E#Value] = {
     Format(enumReads(enum), enumWrites)
   }
+  def findEnum[T <: Enumeration](s: String, enum: T): Option[T#Value] = enum.values.find(_.toString == s)
 }
