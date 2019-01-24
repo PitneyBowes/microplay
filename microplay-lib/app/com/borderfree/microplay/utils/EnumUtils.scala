@@ -36,4 +36,6 @@ object EnumUtils
     Format(enumReads(enum), enumWrites)
   }
   def findEnum[T <: Enumeration](s: String, enum: T): Option[T#Value] = enum.values.find(_.toString == s)
+  def toEnum[T <: Enumeration](s: String, enum: T): T#Value = enum.withName(s)
+
 }
