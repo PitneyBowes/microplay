@@ -53,6 +53,7 @@ trait HttpContentNegotiator extends AcceptExtractors
   def serialize[T: Writes](response: T, request: RequestHeader): Either[JsValue, NodeSeq] =
   {
     val json: JsValue = Json.toJson(response)
+
     request match
     {
       case Accepts.Json() => Left(json) //Json option should precede xml since 'Accept */*' - also falls into Accept.Xml/Json()

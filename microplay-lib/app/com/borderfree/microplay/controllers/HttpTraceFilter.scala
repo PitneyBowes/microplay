@@ -7,6 +7,7 @@ import akka.stream.Materializer
 import com.borderfree.microplay.configuration.AppConfiguration
 import com.borderfree.microplay.logging.{LogSupport, MDCManager}
 import play.api.mvc._
+import net.logstash.logback.argument.StructuredArguments._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,7 +31,6 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
 
   lazy val ReturnedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.returned.header.name")
   lazy val ReturnedCorrelationIdHeaderEnabled: Boolean = appConfiguration.getBoolean("micro.correlation.returned.header.enabled")
-
   def apply(nextFilter: RequestHeader => Future[Result])(requestHeader: RequestHeader): Future[Result] =
   {
     val startTime = System.currentTimeMillis
@@ -43,13 +43,20 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
       }
     )
     nextFilter(requestHeader)
-      .map { result =>
-        val handlingDurationMillis = System.currentTimeMillis - startTime
-        logger.info(s"RequestMethod=${requestHeader.method} ${requestHeader.uri} RequestDuration=${handlingDurationMillis}ms ResponseStatus=${result.header.status} RequestHeaders=${requestHeader.headers.headers.mkString(",")} ResponseHeaders=${result.header.headers.mkString(",")}")
-        addHandlingTimeHeader(result,handlingDurationMillis)
-      }
+      .map (
+        addHandlingTimeHeader(_,System.currentTimeMillis - startTime)
+      )
       .map(addHandlingHostHeader)
-      .map(addCorrelationId(_,mdcManager.clear()))
+      .map(result => {
+        val fullResult = addCorrelationId(result, mdcManager.clear())
+        logger.debug("{} {} {} {}",
+          keyValue("requestMethod",requestHeader.method+" "+requestHeader.uri),
+          keyValue("requestHeaders",Map(requestHeader.headers.headers: _*)),
+          keyValue("responseStatus",fullResult.header.status),
+          keyValue("responseHeaders",fullResult.header.headers))
+        fullResult
+      }
+      )
   }
 
   private def addCorrelationId(result: Result, optCorrelationId: Option[String]) = {
@@ -61,7 +68,7 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
 
   private def addHandlingTimeHeader(result: Result, handlingDurationMillis: Long) = {
     if (ProcessingTimeHeaderEnabled) {
-      result.withHeaders(ProcessingTimeHeaderName -> handlingDurationMillis.toString)
+      result.withHeaders(ProcessingTimeHeaderName -> handlingDurationMillis.toString )
     }
     else {
       result

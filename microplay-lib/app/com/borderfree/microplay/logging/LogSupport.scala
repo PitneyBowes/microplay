@@ -1,13 +1,31 @@
 package com.borderfree.microplay.logging
 
-import play.api.Logger
-
+import akka.event.slf4j.Slf4jLogger
+import com.typesafe.scalalogging.LazyLogging
+import org.slf4j
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 /**
- * Created by IntelliJ IDEA
- * User: Anatoly.Libman
- * Date: 1/18/16
- * Time: 12:03 PM
- */
-trait LogSupport {
-  lazy val logger = Logger(this.getClass)
+  We provide logging support to our applications via
+
+  scala-logging - https://github.com/lightbend/scala-logging
+  and
+  logstash-encoder - https://github.com/logstash/logstash-logback-encoder.
+
+  Thus enabling logging capabilities much richer than those offered by
+  the default play logger.
+
+  Usage example :
+
+  import net.logstash.logback.argument.StructuredArguments._
+
+  logger.debug("example msg {} {}" , keyValue("response", responseObject))
+
+  see logstash encode documentation for all the capabilties
+
+  **/
+
+trait LogSupport extends LazyLogging {
+
+
 }

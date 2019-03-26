@@ -12,6 +12,7 @@ import play.mvc.Http.MimeTypes
 
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
+import net.logstash.logback.argument.StructuredArguments._
 
 /**
   * Created with IntelliJ IDEA.
@@ -37,9 +38,9 @@ trait RestApiConsumer
     execute("GET", apiMethodUriSuffix, request.withQueryStringParameters(queryParameters: _*))
   }
 
-  protected def executePOST[REQ <: Any : Writes, RES <: Any : Reads](apiMethodUriSuffix: String, Any: REQ): Future[RES] = {
-    logger.debug(s"api $apiMethodUriSuffix request: " + Json.toJson(Any))
-    execute("POST", apiMethodUriSuffix, prepareRequest(apiMethodUriSuffix).withBody[REQ](Any).withHttpHeaders((HeaderNames.CONTENT_TYPE, MimeTypes.JSON)))
+  protected def executePOST[REQ <: Any : Writes, RES <: Any : Reads](apiMethodUriSuffix: String, anyReq: REQ): Future[RES] = {
+    logger.debug("api",keyValue(apiMethodUriSuffix+" request",anyReq))
+    execute("POST", apiMethodUriSuffix, prepareRequest(apiMethodUriSuffix).withBody[REQ](anyReq).withHttpHeaders((HeaderNames.CONTENT_TYPE, MimeTypes.JSON)))
   }
 
   protected def execute[RES <: Any : Reads](httpMethod: String, apiMethodUriSuffix: String, wsRequest: WSRequest): Future[RES] = {
@@ -50,10 +51,15 @@ trait RestApiConsumer
         val callDuration = Calendar.getInstance().getTimeInMillis - start
         response.status match {
           case status if ValidHttpResponses.contains(status) =>
-            logger.debug(s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis: ${if(shouldTraceResponseBody(apiMethodUriSuffix))response.body}")
-            Json.parse(response.body).as[RES]
+            val successResponseMsg = s"for $httpMethod to endpoint $apiMethodUriSuffix - received api response within $callDuration millis"
+            val jsonResponse = Json.parse(response.body).as[RES]
+            if (shouldTraceResponseBody(apiMethodUriSuffix))
+              logger.debug(successResponseMsg , keyValue("response", jsonResponse))
+            else
+              logger.debug(successResponseMsg)
+            jsonResponse
           case httpStatus =>
-            logger.error(s"error calling api endpoint - $apiMethodUriSuffix. got response within $callDuration millis with status $httpStatus: ${response.body}")
+            logger.debug(s"error calling api endpoint - $apiMethodUriSuffix. got response within $callDuration millis. {} {}",keyValue("status",httpStatus), keyValue("response",response.body))
             throw createExceptionFromErrorResponse(httpStatus, response, apiMethodUriSuffix)
         }
     }

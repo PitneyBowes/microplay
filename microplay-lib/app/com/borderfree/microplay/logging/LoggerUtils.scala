@@ -11,11 +11,14 @@ import play.api.Logger
 object LoggerUtils {
 
   implicit class LoggerEnhancer(logger: Logger) {
-
-    def debug(keyValueList: (String, String)*) = logger.debug(buildMessage(keyValueList:_*))
-    def info(keyValueList: (String, String)*) = logger.info(buildMessage(keyValueList:_*))
-    def warn(keyValueList: (String, String)*) = logger.warn(buildMessage(keyValueList:_*))
-    def error(keyValueList: (String, String)*) = logger.error(buildMessage(keyValueList:_*))
+     @Deprecated
+    def debug(keyValueList: (String, String)*): Unit = logger.debug(buildMessage(keyValueList:_*))
+    @Deprecated
+    def info(keyValueList: (String, String)*): Unit = logger.info(buildMessage(keyValueList:_*))
+    @Deprecated
+    def warn(keyValueList: (String, String)*): Unit = logger.warn(buildMessage(keyValueList:_*))
+    @Deprecated
+    def error(keyValueList: (String, String)*): Unit = logger.error(buildMessage(keyValueList:_*))
     private def buildMessage(keyValueList: (String, String)*): String = {
       val message = new StringBuilder("")
       for (keyValuePair <- keyValueList) {

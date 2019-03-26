@@ -31,7 +31,15 @@ libraryDependencies ++= Seq(
   "org.json4s" %% "json4s-native" % "3.5.3", "org.json4s" %% "json4s-ext" % "3.5.3", //for json 2 xml conversion, to support xml as an alternative response medium as part of content negotiation
   "io.swagger" %% "swagger-play2" % "1.6.0",
 //  "org.webjars" %% "webjars-play" % "2.6.1",
-  "org.webjars" % "swagger-ui" % "3.20.3"
+  "org.webjars" % "swagger-ui" % "3.20.3",
+  "org.slf4j" % "jul-to-slf4j" % "1.7.25",
+  "ai.x" %% "play-json-extensions" % "0.10.0", //for extended case class to json serialization features
+  "com.typesafe.play" %% "play-json" % "2.6.6",
+  "ch.qos.logback.contrib" % "logback-json-classic" % "0.1.5",
+  "ch.qos.logback.contrib" % "logback-jackson" % "0.1.5",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+  "net.logstash.logback" % "logstash-logback-encoder" %  "5.3",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.8"
 )
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 

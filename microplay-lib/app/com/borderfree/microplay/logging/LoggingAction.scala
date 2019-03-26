@@ -45,16 +45,18 @@ class LoggingAction @Inject()(appConfiguration: AppConfiguration,parser: BodyPar
   }
 
   protected def shouldTraceResponseBody[A](request: Request[A]): Boolean = {
-    logger.isDebugEnabled && !ExcludedUrisForResponseBodyTracing.contains(request.uri)
+    logger.underlying.isDebugEnabled && !ExcludedUrisForResponseBodyTracing.contains(request.uri)
   }
 
   protected def shouldTraceRequestBody[A](request: Request[A]): Boolean = {
-    logger.isDebugEnabled && !ExcludedUrisForRequestBodyTracing.contains(request.uri)
+    logger.underlying.isDebugEnabled && !ExcludedUrisForRequestBodyTracing.contains(request.uri)
   }
+  import net.logstash.logback.argument.StructuredArguments._
 
   protected def logAction[A](request: Request[A], actionType: String, data: String): Unit = {
-    logger.debug(s"action=${request.uri} actionType=$actionType data=$data")
+    logger.debug("logAction {} {} {}",value("action",request.uri),value("actionType",actionType),keyValue("data",data))
   }
+
 
   protected def resolveCharset(result: Result): String = {
     val header = result.header.headers.getOrElse("Content-Type", "")
