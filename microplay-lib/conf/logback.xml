@@ -9,9 +9,41 @@
   <contextName>${HOSTNAME}</contextName>
   <appender name="FILE_APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_HOME:-logs}/${HOSTNAME}.application.log</file>
-    <encoder>
-      <pattern>%date [%contextName] %level %thread %logger{15} CORRELATION_ID=%X{CORRELATION_ID} %message%n%xException</pattern>
-    </encoder>
+      <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+          <jsonFactoryDecorator class="com.borderfree.microplay.logging.PlayJsonFactoryDecorator"/>
+          <findAndRegisterJacksonModules>true</findAndRegisterJacksonModules>
+          <providers>
+              <timestamp>
+                  <fieldName>time</fieldName>
+                  <pattern>yyyy-MM-dd' 'HH:mm:ss.SSS</pattern>
+                  <timeZone>UTC</timeZone>
+              </timestamp>
+              <logLevel/>
+              <pattern>
+                  <pattern>
+                      {
+                      "thread" : "{%thread{15}}",
+                      "logger" : "{%logger{20}}",
+                      "msg": "#tryJson{%message}"
+                      }
+                  </pattern>
+              </pattern>
+              <mdc/>
+              <stackTrace>
+                  <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                      <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                      <maxLength>2048</maxLength>
+                      <shortenedClassNameLength>20</shortenedClassNameLength>
+                      <!--<exclude>^sun\.reflect\..*\.invoke</exclude>-->
+                      <rootCauseFirst>true</rootCauseFirst>
+                  </throwableConverter>
+              </stackTrace>
+              <arguments>
+                  <includeNonStructuredArguments>false</includeNonStructuredArguments>
+              </arguments>
+          </providers>
+          <mdc/>
+      </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <fileNamePattern>${LOG_HOME:-logs}/old/${HOSTNAME}.application.%i.log.zip</fileNamePattern>
       <minIndex>1</minIndex>

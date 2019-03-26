@@ -1,10 +1,6 @@
 package com.borderfree.microplay.logging
 
-import akka.event.slf4j.Slf4jLogger
 import com.typesafe.scalalogging.LazyLogging
-import org.slf4j
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 /**
   We provide logging support to our applications via
 
