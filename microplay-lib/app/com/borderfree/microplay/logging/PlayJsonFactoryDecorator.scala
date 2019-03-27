@@ -1,8 +1,6 @@
 package com.borderfree.microplay.logging
 
 import com.fasterxml.jackson.databind.MappingJsonFactory
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import net.logstash.logback.decorate.JsonFactoryDecorator
 import play.api.libs.json.jackson.PlayJsonModule
