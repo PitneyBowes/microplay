@@ -32,7 +32,6 @@ libraryDependencies ++= Seq(
   "io.swagger" %% "swagger-play2" % "1.6.0",
 //  "org.webjars" %% "webjars-play" % "2.6.1",
   "org.webjars" % "swagger-ui" % "3.20.3",
-  "org.slf4j" % "jul-to-slf4j" % "1.7.25",
   "ch.qos.logback.contrib" % "logback-json-classic" % "0.1.5",
   "ch.qos.logback.contrib" % "logback-jackson" % "0.1.5",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
