@@ -27,6 +27,13 @@ This library is not intended as a seed/scaffold project, so copy-pasting is disc
 
 - Use `conf/application.routes` instead of the default `conf/routes`. specify microplay end points you wish to expose explicitly - review example projects below.
 
+- Your projects `application.conf` will inherit defaults from microplay `application.conf` - review overridable microplay default settings under 
+  ```javascript
+  micro {
+      //microplay default settings....
+  }
+  
+  ```
 
 #### Examples
 
@@ -64,3 +71,4 @@ http://dbygitmsprod.pbi.global.pvt/borderfree/BFX2/bfx-police/commit/be9718357b4
 3. run sbt compile ( required so BuildInfoPlugin will generate BuildInfo class)
 4. right click microplay-lib/build.bst -> Run Play 2 App (verify PlayFramework support plugin installed)
 5. on code changes - > compile (Ctrl F9) and refresh browser
+6. Publish locally - `sbt clean compile test it:test publishLocal`
