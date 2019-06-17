@@ -11,7 +11,7 @@ This library is not intended as a seed/scaffold project, so copy-pasting is disc
     - catch all to json error handler
 - HTTP trace filter. GZIP content negotiation filter
 - swagger UI and swagger core integration
-- /health /status API endpoints 
+- exposes /health, /status API endpoints 
 - Standard json based REST API consumer - `com.borderfree.microplay.services.RestApiConsumer`
 - Objects to Json conversion utils. under `\app\com\borderfree\microplay\utils`   
 
@@ -24,8 +24,6 @@ This library is not intended as a seed/scaffold project, so copy-pasting is disc
     "com.borderfree"  %% "microplay" % "2.6.7.1-+"
     ```
     Find [latest versions](https://artifactory-dev.bfretail.pitneycloud.com/artifactory/libs-release-local/com/borderfree/microplay_2.12/)
-
-- Use `conf/application.routes` instead of the default `conf/routes`. specify microplay end points you wish to expose explicitly - review example projects below.
 
 - Your projects `application.conf` will inherit defaults from microplay `application.conf` - review overridable microplay default settings under 
   ```javascript

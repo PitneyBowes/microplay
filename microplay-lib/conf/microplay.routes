@@ -4,22 +4,24 @@
 # ~~~~
 
 # API for Swagger UI - auto genereated schema and api doc
-GET         /swagger.json                        controllers.ApiHelpController.getResources
+GET        /swagger.json        controllers.ApiHelpController.getResources
 # Swagger UI
-GET         /docs                                controllers.Default.redirect(to = "/docs/")
-GET         /docs/                               controllers.Assets.at(path="/public/swagger-ui",file="index.html")
-GET         /docs/*file                          controllers.Assets.at(path="/public/lib/swagger-ui",file)
-GET         /license                             controllers.Assets.at(path="/public",file="license.html")
+GET        /docs                controllers.Default.redirect(to = "/docs/")
+GET        /docs/               controllers.Assets.at(path="/public/swagger-ui",file="index.html")
+GET        /docs/*file          controllers.Assets.at(path="/public/lib/swagger-ui",file)
+GET        /license             controllers.Assets.at(path="/public",file="license.html")
 
 #GET    /webjars/*file          controllers.WebJarAssets.at(file)
 
 # health/status checks
-GET         /health                              com.borderfree.microplay.controllers.HealthCheckController.health
-GET         /env                                 com.borderfree.microplay.controllers.HealthCheckController.env
-GET         /status                              com.borderfree.microplay.controllers.HealthCheckController.status
+GET        /health              com.borderfree.microplay.controllers.HealthCheckController.health
+GET        /env                 com.borderfree.microplay.controllers.HealthCheckController.env
+GET        /status              com.borderfree.microplay.controllers.HealthCheckController.status
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                        controllers.Assets.at(path="/public", file)
+GET        /assets/*file        controllers.Assets.at(path="/public", file)
 #GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 #GET  /favicon.ico   controllers.Assets.at(path="/public/images", file="pb-logo.ico")
+
+->         /                    com.borderfree.microplay.configuration.RoutesDelegator

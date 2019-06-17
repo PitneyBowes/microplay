@@ -3,7 +3,7 @@ organization := "com.borderfree"
 version := System.getProperty("version", "1.0.0")
 scalaVersion := "2.12.8"
 
-lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, /*SonarRunnerPlugin, */BuildInfoPlugin, GitVersioning)
+lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning)
 
 
 externalResolvers := Seq(Resolver.file("local", file(Path.userHome.absolutePath + "/.ivy2/cache"))(Resolver.ivyStylePatterns))
@@ -25,12 +25,8 @@ libraryDependencies ++= Seq(
   ws,
   specs2 % "test,it",
   guice,
-//  "ai.x" %% "play-json-extensions" % "0.10.0", //for extended case class to json serialization features
-//  "com.typesafe.play" %% "play-json" % "2.6.6",
-//  "com.typesafe.play" %% "play-json-joda" % "2.6.6",
   "org.json4s" %% "json4s-native" % "3.5.3", "org.json4s" %% "json4s-ext" % "3.5.3", //for json 2 xml conversion, to support xml as an alternative response medium as part of content negotiation
-  "io.swagger" %% "swagger-play2" % "1.6.0",
-//  "org.webjars" %% "webjars-play" % "2.6.1",
+  "io.swagger" %% "swagger-play2" % "1.6.1",
   "org.webjars" % "swagger-ui" % "3.20.3",
   "ch.qos.logback.contrib" % "logback-json-classic" % "0.1.5",
   "ch.qos.logback.contrib" % "logback-jackson" % "0.1.5",
