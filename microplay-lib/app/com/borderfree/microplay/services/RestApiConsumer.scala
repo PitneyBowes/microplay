@@ -48,7 +48,7 @@ trait RestApiConsumer
 
   private def executeRequestWithBody[RES <: Any : Reads, REQ <: Any : Writes](httpMethod: String, apiMethodUriSuffix: String, anyReq: REQ) = {
     logger.debug("api", keyValue(httpMethod +" "+apiMethodUriSuffix+" request: ",anyReq))
-      execute(httpMethod, apiMethodUriSuffix, prepareRequest(apiMethodUriSuffix).withBody[REQ](anyReq).withHttpHeaders((HeaderNames.CONTENT_TYPE, MimeTypes.JSON)))
+      execute(httpMethod, apiMethodUriSuffix, prepareRequest(apiMethodUriSuffix).withBody[REQ](anyReq))
   }
 
   protected def execute[RES <: Any : Reads](httpMethod: String, apiMethodUriSuffix: String, wsRequest: WSRequest): Future[RES] = {
