@@ -51,19 +51,17 @@ class MDCPropagatingDispatcher(_configurator: MessageDispatcherConfigurator,
     // capture the MDC
     val mdcContext = Option(MDC.getCopyOfContextMap)
 
-    def execute(r: Runnable): Unit = self.execute(new Runnable {
-      def run(): Unit = {
-        // backup the callee MDC context
-        val oldMDCContext = Option(MDC.getCopyOfContextMap)
+    def execute(r: Runnable): Unit = self.execute(() => {
+      // backup the callee MDC context
+      val oldMDCContext = Option(MDC.getCopyOfContextMap)
 
-        // Run the runnable with the captured context
-        setContextMap(mdcContext)
-        try {
-          r.run()
-        } finally {
-          // restore the callee MDC context
-          setContextMap(oldMDCContext)
-        }
+      // Run the runnable with the captured context
+      setContextMap(mdcContext)
+      try {
+        r.run()
+      } finally {
+        // restore the callee MDC context
+        setContextMap(oldMDCContext)
       }
     })
     def reportFailure(t: Throwable): Unit = self.reportFailure(t)

@@ -2,12 +2,13 @@ package com.borderfree.microplay.controllers
 
 import java.net.InetAddress
 
-import javax.inject.Inject
 import akka.stream.Materializer
 import com.borderfree.microplay.configuration.AppConfiguration
 import com.borderfree.microplay.logging.{LogSupport, MDCManager}
-import play.api.mvc._
+import com.borderfree.microplay.utils.AuthHeadersMasker
+import javax.inject.Inject
 import net.logstash.logback.argument.StructuredArguments._
+import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,6 +32,7 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
 
   lazy val ReturnedCorrelationIdHeaderName: String = appConfiguration.getString("micro.correlation.returned.header.name")
   lazy val ReturnedCorrelationIdHeaderEnabled: Boolean = appConfiguration.getBoolean("micro.correlation.returned.header.enabled")
+
   def apply(nextFilter: RequestHeader => Future[Result])(requestHeader: RequestHeader): Future[Result] =
   {
     val startTime = System.currentTimeMillis
@@ -48,21 +50,24 @@ class HttpTraceFilter @Inject()(implicit val mat: Materializer, ec: ExecutionCon
       )
       .map(addHandlingHostHeader)
       .map(result => {
-        val fullResult = addCorrelationId(result, mdcManager.clear())
+        val fullResult = addCorrelationId(result, mdcManager.getCorrelationId())
         logger.debug("{} {} {} {}",
           keyValue("requestMethod",requestHeader.method+" "+requestHeader.uri),
-          keyValue("requestHeaders",Map(requestHeader.headers.headers: _*)),
+          keyValue("requestHeaders", AuthHeadersMasker.maskHeaders(Map(requestHeader.headers.headers: _*))),
           keyValue("responseStatus",fullResult.header.status),
           keyValue("responseHeaders",fullResult.header.headers))
+        mdcManager.clear()
         fullResult
       }
       )
   }
 
-  private def addCorrelationId(result: Result, optCorrelationId: Option[String]) = {
-    (ReturnedCorrelationIdHeaderEnabled,optCorrelationId) match {
-      case (true,Some(correlationId)) => result.withHeaders(ReturnedCorrelationIdHeaderName -> correlationId)
-      case _ => result
+  private def addCorrelationId(result: Result, correlationId: String) = {
+
+    if (ReturnedCorrelationIdHeaderEnabled) {
+      result.withHeaders(ReturnedCorrelationIdHeaderName -> correlationId)
+    } else {
+      result
     }
   }
 
