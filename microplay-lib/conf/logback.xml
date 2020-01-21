@@ -10,7 +10,7 @@
   <appender name="FILE_APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_HOME:-logs}/${HOSTNAME}.application.log</file>
       <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-          <jsonFactoryDecorator class="com.borderfree.microplay.logging.PlayJsonFactoryDecorator"/>
+          <jsonFactoryDecorator class="com.pb.microplay.logging.PlayJsonFactoryDecorator"/>
           <findAndRegisterJacksonModules>true</findAndRegisterJacksonModules>
           <providers>
               <timestamp>

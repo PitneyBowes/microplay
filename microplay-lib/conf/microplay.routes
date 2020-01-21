@@ -14,9 +14,9 @@ GET        /license             controllers.Assets.at(path="/public",file="licen
 #GET    /webjars/*file          controllers.WebJarAssets.at(file)
 
 # health/status checks
-GET        /health              com.borderfree.microplay.controllers.HealthCheckController.health
-GET        /env                 com.borderfree.microplay.controllers.HealthCheckController.env
-GET        /status              com.borderfree.microplay.controllers.HealthCheckController.status
+GET        /health              com.pb.microplay.controllers.HealthCheckController.health
+GET        /env                 com.pb.microplay.controllers.HealthCheckController.env
+GET        /status              com.pb.microplay.controllers.HealthCheckController.status
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.at(path="/public", file)
@@ -24,4 +24,4 @@ GET        /assets/*file        controllers.Assets.at(path="/public", file)
 
 #GET  /favicon.ico   controllers.Assets.at(path="/public/images", file="pb-logo.ico")
 
-->         /                    com.borderfree.microplay.configuration.RoutesDelegator
+->         /                    com.pb.microplay.configuration.RoutesDelegator
