@@ -42,7 +42,7 @@ version format:
 3. run sbt compile ( required so BuildInfoPlugin will generate BuildInfo class)
 4. right click microplay-lib/build.bst -> Run Play 2 App (verify PlayFramework support plugin installed)
 5. on code changes - > compile (Ctrl F9) and refresh browser
-6. re-run tests & publish locally - `sbt clean compile test it:test publishLocal`
+6. re-run tests & publish locally - `sbt "project microplay-lib" clean compile test it:test publishLocal`
 
 ### Contributing/Developing
 Please refer to [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
