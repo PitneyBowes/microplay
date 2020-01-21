@@ -1,4 +1,4 @@
-package com.borderfree.micro.play.logging
+package com.pb.microplay.logging
 
 import play.api.Logger
 

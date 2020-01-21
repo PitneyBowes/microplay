@@ -1,4 +1,4 @@
-package com.borderfree.micro.play.utils
+package com.pb.microplay.utils
 
 import play.api.libs.json._
 

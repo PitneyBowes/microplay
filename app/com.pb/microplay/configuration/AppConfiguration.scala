@@ -1,8 +1,8 @@
-package com.borderfree.micro.play.configuration
+package com.pb.microplay.configuration
 
 import javax.inject.{Inject, Singleton}
 
-import com.borderfree.micro.play.logging.LogSupport
+import com.pb.microplay.logging.LogSupport
 import com.google.inject.ImplementedBy
 import com.typesafe.config.Config
 import play.api.{ConfigLoader, Configuration}

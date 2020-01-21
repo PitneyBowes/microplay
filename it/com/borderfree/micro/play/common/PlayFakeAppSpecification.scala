@@ -1,4 +1,4 @@
-package com.borderfree.micro.play.common
+package com.pb.microplay.common
 
 import com.typesafe.config.ConfigFactory
 import play.api.inject.guice.GuiceApplicationBuilder

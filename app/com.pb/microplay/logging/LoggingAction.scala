@@ -1,9 +1,9 @@
-package com.borderfree.micro.play.logging
+package com.pb.microplay.logging
 
 import javax.inject.Inject
 
 import akka.stream._
-import com.borderfree.micro.play.logging.LoggerUtils._
+import com.pb.microplay.logging.LoggerUtils._
 import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}

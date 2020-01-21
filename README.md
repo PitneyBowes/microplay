@@ -13,7 +13,7 @@ This library is meant to be used a dependency rather then a copy/paste seed/scaf
 - swagger UI and swagger core integration
 - exposes /health, /status /docs API endpoints 
 - Standard json based REST API consumer - `com.pb.microplay.services.RestApiConsumer`
-- Objects to Json conversion utils. under `\app\com\borderfree\microplay\utils`   
+- Objects to Json conversion utils. under `\app\com\pb\microplay\utils`   
 
 #### Installation/Usage
 
@@ -44,10 +44,6 @@ version format:
 4. right click microplay-lib/build.bst -> Run Play 2 App (verify PlayFramework support plugin installed)
 5. on code changes - > compile (Ctrl F9) and refresh browser
 6. re-run tests & publish locally - `sbt clean compile test it:test publishLocal`
-
-#### License
-
-#### Contribution
 
 ### Contributing/Developing
 Please refer to [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.

@@ -1,10 +1,10 @@
-package com.borderfree.micro.play.services
+package com.pb.microplay.services
 
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
-import com.borderfree.micro.play.error.RestClientException
-import com.borderfree.micro.play.logging.{LogSupport, MDCManager}
+import com.pb.microplay.error.RestClientException
+import com.pb.microplay.logging.{LogSupport, MDCManager}
 import play.api.http.{HeaderNames, Status}
 import play.api.libs.json._
 import play.api.libs.ws.{BodyWritable, WSClient, WSRequest, WSResponse}

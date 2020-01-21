@@ -1,8 +1,8 @@
-package com.borderfree.micro.play.logging
+package com.pb.microplay.logging
 
 import javax.inject.Inject
 
-import com.borderfree.micro.play.configuration.AppConfiguration
+import com.pb.microplay.configuration.AppConfiguration
 import com.google.inject.ImplementedBy
 import org.slf4j.MDC
 

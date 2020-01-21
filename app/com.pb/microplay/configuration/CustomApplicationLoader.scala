@@ -1,4 +1,4 @@
-package com.borderfree.micro.play.configuration
+package com.pb.microplay.configuration
 
 import com.typesafe.config.ConfigFactory
 import play.api.inject.guice._

@@ -1,6 +1,6 @@
-package com.borderfree.micro.play.controllers
+package com.pb.microplay.controllers
 
-import com.borderfree.micro.play.common.PlayFakeAppSpecification
+import com.pb.microplay.common.PlayFakeAppSpecification
 import play.api.test._
 
 class HealthCheckControllerTest extends PlayFakeAppSpecification{

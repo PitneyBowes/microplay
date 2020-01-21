@@ -1,5 +1,5 @@
 name := "microplay"
-organization := "com.borderfree"
+organization := "com.pb"
 //version := System.getProperty("version", "1.0.0")
 version := "2.6.3.52"
 scalaVersion := "2.12.8"

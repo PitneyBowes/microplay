@@ -1,9 +1,9 @@
-package com.borderfree.micro.play.controllers
+package com.pb.microplay.controllers
 
 import javax.inject.{Inject, Singleton}
 
-import com.borderfree.micro.play.configuration.AppConfiguration
-import com.borderfree.micro.play.logging.LoggingAction
+import com.pb.microplay.configuration.AppConfiguration
+import com.pb.microplay.logging.LoggingAction
 import io.swagger.annotations._
 import play.api.Configuration
 import play.api.mvc._
@@ -14,7 +14,7 @@ import scala.reflect.ManifestFactory
 @Api(value = "Health/Status checks")
 class HealthCheckController @Inject()(val loggingAction:LoggingAction,configuration:Configuration,appConfiguration: AppConfiguration, controllerComponents: ControllerComponents) extends AbstractController(controllerComponents) {
 
-  lazy val buildInfoLoader:BuildInfoLoader= new BuildInfoLoader(appConfiguration.getOptional[String]("micro.build.info").getOrElse("com.borderfree.micro.play.BuildInfo"))
+  lazy val buildInfoLoader:BuildInfoLoader= new BuildInfoLoader(appConfiguration.getOptional[String]("micro.build.info").getOrElse("com.pb.microplay.BuildInfo"))
 
   @ApiOperation(nickname = "health", value = "get health status", notes = "Returns health status", response = classOf[String], httpMethod = "GET")
   @ApiResponses(Array(new ApiResponse(code = 200, message = "OK status")))

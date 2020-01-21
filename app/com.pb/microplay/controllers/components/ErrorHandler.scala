@@ -1,6 +1,6 @@
-package com.borderfree.micro.play.controllers.components
+package com.pb.microplay.controllers.components
 
-import com.borderfree.micro.play.logging.LogSupport
+import com.pb.microplay.logging.LogSupport
 import play.api.libs.json.Writes
 import play.api.mvc.{RequestHeader, Result, Results}
 

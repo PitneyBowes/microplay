@@ -1,5 +1,5 @@
 
-package com.borderfree.micro.play.logging
+package com.pb.microplay.logging
 
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito

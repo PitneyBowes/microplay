@@ -1,7 +1,7 @@
-package com.borderfree.micro.play.controllers.components
+package com.pb.microplay.controllers.components
 
-import com.borderfree.micro.play.configuration.AppConfiguration
-import com.borderfree.micro.play.logging.{LogSupport, LoggingAction}
+import com.pb.microplay.configuration.AppConfiguration
+import com.pb.microplay.logging.{LogSupport, LoggingAction}
 
 import scala.concurrent.ExecutionContext
 //import com.mohiva.play.silhouette.api.Silhouette
