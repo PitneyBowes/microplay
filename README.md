@@ -39,7 +39,7 @@ version format:
  
 #### IJ IDEA Project setup:
 1. git clone 
-2. import build.sbt in IDEA 
+2. import build.sbt in IDEA ®
 3. run sbt compile ( required so BuildInfoPlugin will generate BuildInfo class)
 4. right click microplay-lib/build.bst -> Run Play 2 App (verify PlayFramework support plugin installed)
 5. on code changes - > compile (Ctrl F9) and refresh browser
@@ -51,3 +51,5 @@ Please refer to [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 ### License
 Copyright (c) 2016 - 2020  [Pitney Bowes](https://www.pitneybowes.com).
 Licensed for free usage under the terms and conditions of Apache V2 - [Apache V2 License](https://www.apache.org/licenses/LICENSE-2.0).
+
+![Pitney Bowes](PB_Logo.jpg)
