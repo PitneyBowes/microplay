@@ -10,18 +10,25 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.pb.microplay.configuration
+package com.pb.microplay.common
 
-import controllers.ApiHelpController
-import play.api.inject.{Binding, Module}
-import play.api.{Configuration, Environment}
-import play.modules.swagger.SwaggerPlugin
+import com.typesafe.config.ConfigFactory
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.test.PlaySpecification
+import play.api.{Configuration, Mode}
 
-class CustomSwaggerModule extends Module {
+/**
+  * Created by Rohi Fadlun on 5/16/2017.
+  */
 
-  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] =  Seq(
-    bind[SwaggerPlugin].to[SwaggerPluginExt].eagerly(),
-    bind[ApiHelpController].toSelf.eagerly()
-  )
+trait PlayFakeAppSpecification extends PlaySpecification {
+
+  def getFakeApp = {
+    new GuiceApplicationBuilder()
+      .in(Mode.Test)
+      .loadConfig(Configuration(ConfigFactory.load(s"conf/application-test.conf")))
+      .build()
+  }
+
 
 }
