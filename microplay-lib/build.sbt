@@ -6,16 +6,7 @@ scalaVersion := "2.12.8"
 
 lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning)
 
-
-//externalResolvers := Seq(Resolver.file("local", file(Path.userHome.absolutePath + "/.ivy2/cache"))(Resolver.ivyStylePatterns))
-//externalResolvers += Resolver.sonatypeRepo("public")
-//externalResolvers += Resolver.sonatypeRepo("snapshots")
-/*
-Repositories included in PB artifactory. enable these as a fallback when artifactory is down:
-externalResolvers += Resolver.jcenterRepo
-externalResolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
-*/
-//resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+//resolvers := Seq(Resolver.file("local", file(Path.userHome.absolutePath + "/.ivy2/cache"))(Resolver.ivyStylePatterns))
 
 libraryDependencies ++= Seq(
   ws,
