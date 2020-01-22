@@ -1,8 +1,10 @@
 # Microplay
 
-A library with some common toolset for RESTfull micro services built on Play framework.
+A library with common toolset for RESTfull micro services built on Play framework.
 
 [ ![Download](https://api.bintray.com/packages/yarony/PB_Maven/microplay/images/download.svg?version=2.6.3.56) ](https://bintray.com/yarony/PB_Maven/microplay/2.6.3.56/link)
+[![Actions Status](https://github.com/PitneyBowes/microplay/workflows/Test/badge.svg)](https://github.com/PitneyBowes/microplay/actions)
+
 #### Main Features
 
 - Base REST API Controller `com.pb.microplay.controllers.components.ApiControllerActions` supporting:
@@ -24,9 +26,9 @@ In sbt build file:
 
 2. sdd the library as an sbt dependency:   
     ```scala
-    "com.pb"  %% "microplay" % "2.6.3.56"
-    or
-    "com.pb"  %% "microplay" % "2.6.3.+"
+    libraryDependencies += "com.pb"  %% "microplay" % "2.6.3.56"
+    //or
+    libraryDependencies += "com.pb"  %% "microplay" % "2.6.3.+"
     ```
 
 - Your projects configuration will inherit default configuration from microplay [`application.conf`](/microplay-lib/conf/application.conf) - you can review and decide to override these settings under the `micro` node 
