@@ -1,8 +1,11 @@
 name := "microplay"
 organization := "com.pb"
 //version := System.getProperty("version", "1.0.0")
-version := "2.6.3.52"
+version := "2.6.3.56"
 scalaVersion := "2.12.8"
+bintrayRepository := "PB_Maven"
+bintrayPackage := "microplay"
+licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
 lazy val `microplay-lib` = (project in file(".")).configs(IntegrationTest).settings(Defaults.itSettings: _*).enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning)
 
