@@ -26,9 +26,9 @@ In sbt build file:
 
 2. sdd the library as an sbt dependency:   
     ```scala
-    libraryDependencies += "com.pb"  %% "microplay" % "2.6.3.56"
+    libraryDependencies += "com.pb"  %% "microplay" % "26.3.63"
     //or
-    libraryDependencies += "com.pb"  %% "microplay" % "2.6.3.+"
+    libraryDependencies += "com.pb"  %% "microplay" % "26.3.+"
     ```
 
 - Your projects configuration will inherit default configuration from microplay [`application.conf`](/microplay-lib/conf/application.conf) - you can review and decide to override these settings under the `micro` node 
@@ -42,7 +42,7 @@ In sbt build file:
 Microplay library version is prefixed with the version of play framework which it depends upon. 
 
 version format:
-`<play-major>.<play-minor>.<microplay-major>-<microplay-minor>`
+`<play-major><play-minor>.<microplay-major>.<microplay-minor>`
  
 #### IJ IDEA Project setup:
 1. git clone 
