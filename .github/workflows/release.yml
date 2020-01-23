@@ -30,4 +30,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: 'microplay-lib/target/scala-*/*.jar|microplay-lib/target/scala-*/*.pom'
+          args: 'microplay-lib/target/scala-*/*.jar'
