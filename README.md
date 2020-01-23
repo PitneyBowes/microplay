@@ -1,8 +1,8 @@
 # Microplay
 
-A library with common toolset for RESTfull micro services built on Play framework.
+A scala library with common toolset for RESTfull micro services built on Play Framework.
 
-[ ![Download](https://api.bintray.com/packages/yarony/PB_Maven/microplay/images/download.svg?version=2.6.3.56) ](https://bintray.com/yarony/PB_Maven/microplay/2.6.3.56/link)
+[ ![Download](https://api.bintray.com/packages/yarony/PB_Maven/microplay/images/download.svg) ](https://bintray.com/yarony/PB_Maven/microplay/_latestVersion)
 [![Actions Status](https://github.com/PitneyBowes/microplay/workflows/Test/badge.svg)](https://github.com/PitneyBowes/microplay/actions)
 
 #### Main Features
