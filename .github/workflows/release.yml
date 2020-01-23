@@ -15,6 +15,10 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Get tag version
+        id: get_version
+        run: echo ::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}
+
       - name: Publish
         env:
           BINTRAY_USER: ${{ secrets.bintrayUsername }}
