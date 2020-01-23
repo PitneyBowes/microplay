@@ -26,7 +26,7 @@ In sbt build file:
 
 2. sdd the library as an sbt dependency:   
     ```scala
-    libraryDependencies += "com.pb"  %% "microplay" % "26.3.63"
+    libraryDependencies += "com.pb"  %% "microplay" % "26.3.64"
     //or
     libraryDependencies += "com.pb"  %% "microplay" % "26.3.+"
     ```
