@@ -24,11 +24,11 @@ In sbt build file:
     resolvers += Resolver.jcenterRepo
     ```
 
-2. sdd the library as an sbt dependency:   
+2. add the library as an sbt dependency:   
     ```scala
-    libraryDependencies += "com.pb"  %% "microplay" % "26.3.64"
+    libraryDependencies += "com.pb"  %% "microplay" % "3.26.3.67"
     //or
-    libraryDependencies += "com.pb"  %% "microplay" % "26.3.+"
+    libraryDependencies += "com.pb"  %% "microplay" % "3.26.3.+"
     ```
 
 - Your projects configuration will inherit default configuration from microplay [`application.conf`](/microplay-lib/conf/application.conf) - you can review and decide to override these settings under the `micro` node 
@@ -39,10 +39,10 @@ In sbt build file:
   ```
 
 #### Versioning
-Microplay library version is prefixed with the version of play framework which it depends upon. 
-
-version format:
-`<play-major><play-minor>.<microplay-major>.<microplay-minor>`
+Microplay library version is in semver format but doesn't reflect the standard semver semantics.
+in order to reflect the tight coupling of the dependant play framework version - the expected minor version is actually a concatenation of play major and minor versions.
+so the version format is composed of:
+`<microplay-major>.<play-major><play-minor>.<microplay-minor>`
  
 #### IJ IDEA Project setup:
 1. git clone 
@@ -56,7 +56,7 @@ version format:
 Please refer to [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 
 ### License
-Copyright (c) 2020  [Pitney Bowes Inc,](https://www.pitneybowes.com).
+Copyright (c) 2020  [Pitney Bowes Inc](https://www.pitneybowes.com).
 Licensed for free usage under the terms and conditions of Apache V2 - [Apache V2 License](https://www.apache.org/licenses/LICENSE-2.0).
 
 ![Pitney Bowes](PB_Logo.jpg)

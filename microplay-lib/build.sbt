@@ -1,6 +1,6 @@
 name := "microplay"
 organization := "com.pb"
-version := sys.env.getOrElse("VERSION", "26.SNAPSHOT")
+version := sys.env.getOrElse("VERSION", "3.26.0-SNAPSHOT")
 scalaVersion := "2.12.8"
 bintrayRepository := "PB_Maven"
 bintrayPackage := "microplay"
