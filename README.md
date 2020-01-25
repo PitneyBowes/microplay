@@ -26,9 +26,9 @@ In sbt build file:
 
 2. add the library as an sbt dependency:   
     ```scala
-    libraryDependencies += "com.pb"  %% "microplay" % "3.26.3.67"
+    libraryDependencies += "com.pb"  %% "microplay" % "3.26.67"
     //or
-    libraryDependencies += "com.pb"  %% "microplay" % "3.26.3.+"
+    libraryDependencies += "com.pb"  %% "microplay" % "3.26.+"
     ```
 
 - Your projects configuration will inherit default configuration from microplay [`application.conf`](/microplay-lib/conf/application.conf) - you can review and decide to override these settings under the `micro` node 
