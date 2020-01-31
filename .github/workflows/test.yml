@@ -26,7 +26,7 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: microplay-lib/target/*/converage-report/covertura.xml
+#        file: microplay-lib/target/*/converage-report/covertura.xml
         flags: unittests
         name: codecov-microplay
 #        yml: ./codecov.yml
