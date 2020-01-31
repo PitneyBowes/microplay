@@ -20,15 +20,14 @@ jobs:
         java-version: 1.8
 
     - name: Run tests
-      run: sbt "project microplay-lib" test it:test
-#      run: sbt "project microplay-lib" coverage test it:test coverageReport
+      run: sbt "project microplay-lib" coverage test it:test coverageReport
 
-#    - name: Upload coverage report
-#      uses: codecov/codecov-action@v1
-#      with:
-#        token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
 #        file: microplay-lib/target/*/converage-report/covertura.xml
-#        flags: unittests
-#        name: codecov-umbrella
-##        yml: ./codecov.yml
-#        fail_ci_if_error: true
+        flags: unittests
+        name: codecov-microplay
+#        yml: ./codecov.yml
+        fail_ci_if_error: true
