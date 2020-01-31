@@ -21,7 +21,7 @@ jobs:
 
     - name: Run tests
 #    running it:test first since coverage data is being cleaned between these tasks and unit test coverage is more important - to bo fixed
-      run: sbt "project microplay-lib" clean coverage it:test test coverageReport
+      run: sbt "project microplay-lib" clean it:test coverage test coverageReport
 
     - name: Upload coverage report
       uses: codecov/codecov-action@v1

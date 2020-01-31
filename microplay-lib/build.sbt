@@ -31,6 +31,7 @@ buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfo
 
 sourceDirectory in IntegrationTest := baseDirectory.value / "it"
 scalaSource in IntegrationTest := baseDirectory.value / "it"
+coverageExcludedPackages := "<empty>;controllers.*;.*BuildInfo;.*Routes;.*RoutesPrefix"
 
 scalacOptions ++= Seq(
   "-deprecation",                // Emit warning and location for usages of deprecated APIs.
