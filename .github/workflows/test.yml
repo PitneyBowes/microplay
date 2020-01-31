@@ -20,7 +20,8 @@ jobs:
         java-version: 1.8
 
     - name: Run tests
-      run: sbt "project microplay-lib" coverage test it:test coverageReport
+#    running it:test first since coverage data is being cleaned between these tasks and unit test coverage is more important - to bo fixed
+      run: sbt "project microplay-lib" coverage it:test test coverageReport
 
     - name: Upload coverage report
       uses: codecov/codecov-action@v1
@@ -29,5 +30,5 @@ jobs:
 #        file: microplay-lib/target/*/converage-report/covertura.xml
         flags: unittests
         name: codecov-microplay
-#        yml: ./codecov.yml
+        yml: ./codecov.yml
         fail_ci_if_error: true
