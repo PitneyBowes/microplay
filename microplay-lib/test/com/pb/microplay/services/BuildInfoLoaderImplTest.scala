@@ -35,7 +35,7 @@ class BuildInfoLoaderImplTest extends Specification with Mockito
       "get Build Info" in
         {
           val result = buildInfoLoaderImpl.getBuildInfo
-          result.toJson must contain("\"builtAtMillis\"")
+          result.toJson must contain("\"buildTime\"")
           result.toMap.size must beGreaterThanOrEqualTo(5)
         }
     }

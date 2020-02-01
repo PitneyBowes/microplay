@@ -1,3 +1,5 @@
+import java.time.{ZoneOffset, ZonedDateTime}
+
 name := "microplay"
 organization := "com.pb"
 version := sys.env.getOrElse("VERSION", "3.26.0-SNAPSHOT")
@@ -25,13 +27,15 @@ libraryDependencies ++= Seq(
 )
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
-buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, git.gitHeadCommit)
 buildInfoPackage := "com.pb.microplay"
-buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap,BuildInfoOption.BuildTime, BuildInfoOption.Traits("com.pb.microplay.services.BuildInfoMeta"))
+lazy val buildTime: SettingKey[String] = SettingKey[String]("buildTime", "time of build")
+ThisBuild / buildTime := ZonedDateTime.now(ZoneOffset.UTC).toString //Need to generate build time statically instead of using 'BuildInfoOption.BuildTime' - to avoid re-compilation at it:test phases which causes sbt-coverage to clean the coverage data from the test phase which messes up the coverage report
+buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, git.gitHeadCommit,buildTime)
+buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.ToMap, /*BuildInfoOption.BuildTime,*/  BuildInfoOption.Traits("com.pb.microplay.services.BuildInfoMeta"))
 
 sourceDirectory in IntegrationTest := baseDirectory.value / "it"
 scalaSource in IntegrationTest := baseDirectory.value / "it"
-coverageExcludedPackages := "<empty>;controllers.*;.*BuildInfo;.*Routes;.*RoutesPrefix"
+coverageExcludedPackages := "controllers.*;.*Reverse.*Controller"
 
 scalacOptions ++= Seq(
   "-deprecation",                // Emit warning and location for usages of deprecated APIs.

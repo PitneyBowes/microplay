@@ -33,7 +33,7 @@ class HealthCheckControllerTest extends PlayFakeAppSpecification{
     "build info status end point" in new WithApplication {
       val Some(result) = route(app, FakeRequest(GET, "/status"))
       status(result) mustEqual OK
-      contentAsString(result) must contain("\"builtAtMillis\"")
+      contentAsString(result) must contain("\"buildTime\"")
     }
   }
 
