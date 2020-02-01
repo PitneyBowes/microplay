@@ -23,27 +23,18 @@ import scala.language.implicitConversions
  */
 object EnumUtils
 {
-  implicit def enumReads[E <: Enumeration](enum: E): Reads[E#Value] = new Reads[E#Value]
-  {
-    def reads(json: JsValue): JsResult[E#Value] = json match
-    {
-      case JsString(s) =>
-      {
-        try
-        {
-          JsSuccess(enum.withName(s))
-        }
-        catch
-          {
-            case _: NoSuchElementException => JsError(s"expecting one of: ${enum.values.mkString(",")} - but instead got: '$s'")
-          }
+  implicit def enumReads[E <: Enumeration](enum: E): Reads[E#Value] = {
+    case JsString(s) => {
+      try {
+        JsSuccess(enum.withName(s))
       }
-      case _ => JsError("String value expected")
+      catch {
+        case _: NoSuchElementException => JsError(s"expecting one of: ${enum.values.mkString(",")} - but instead got: '$s'")
+      }
     }
+    case _ => JsError("String value expected")
   }
-  implicit def enumWrites[E <: Enumeration]: Writes[E#Value] = new Writes[E#Value] {
-    def writes(v: E#Value): JsValue = JsString(v.toString)
-  }
+  implicit def enumWrites[E <: Enumeration]: Writes[E#Value] = (v: E#Value) => JsString(v.toString)
   implicit def enumFormat[E <: Enumeration](enum: E): Format[E#Value] = {
     Format(enumReads(enum), enumWrites)
   }
