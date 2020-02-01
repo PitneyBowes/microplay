@@ -13,7 +13,7 @@
 package com.pb.microplay.utils
 
 import org.specs2.mutable.Specification
-
+import play.api.libs.json.{Format, JsString, JsSuccess}
 /**
   * Created with IntelliJ IDEA.
   * User: yaron.yamin
@@ -35,4 +35,19 @@ class EnumUtilsTest extends Specification
       EnumUtils.findEnum("Monday", Weekday) === None
     }
   }
+  "enumFormat" should {
+    "return enum formatter" in {
+      val result  = EnumUtils.enumFormat(Weekday)
+      result.isInstanceOf[Format[Weekday.Value]] === true
+    }
+    "write enum" in {
+      implicit val result: Format[Weekday.Value] = EnumUtils.enumFormat(Weekday)
+      result.writes(Weekday.Monday) === JsString("MONDAY")
+    }
+    "read enum" in {
+      implicit val result: Format[Weekday.Value] = EnumUtils.enumFormat(Weekday)
+      result.reads(JsString("MONDAY")) === JsSuccess(Weekday.Monday)
+    }
+  }
+
 }
