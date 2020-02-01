@@ -4,7 +4,7 @@ A scala library with common toolset for RESTfull micro services built on Play Fr
 
 [ ![Download](https://api.bintray.com/packages/yarony/PB_Maven/microplay/images/download.svg) ](https://bintray.com/yarony/PB_Maven/microplay/_latestVersion)
 [![Actions Status](https://github.com/PitneyBowes/microplay/workflows/Test/badge.svg)](https://github.com/PitneyBowes/microplay/actions)
-
+[![codecov](https://codecov.io/gh/PitneyBowes/microplay/branch/master/graph/badge.svg)](https://codecov.io/gh/PitneyBowes/microplay)
 #### Main Features
 
 - Base REST API Controller `com.pb.microplay.controllers.components.ApiControllerActions` supporting:
