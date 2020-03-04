@@ -7,8 +7,6 @@
 3. add UT/IUT and raise coverage level.
 4. upgrading to play 2.7/2.8, review new feature and consider removing/adapting some intersecting features ( such as global error handling returning json responses - by now introduced in play 2.7) 
 5. make the swagger docs customizable for the organization, license, etc attributions
-6. add CLA and automated CLA form population
-7. Integrate with code coverage application ( prefereably codecov) for serving coverage reports and verifying MR's. 
 
 #### Functional
 
