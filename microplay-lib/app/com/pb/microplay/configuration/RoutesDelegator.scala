@@ -37,7 +37,7 @@ class RoutesDelegator @Inject() (injector: Injector, env: Environment, conf: App
   }
   catch {
     case x:Throwable =>
-      logger.warn("can't find default generated Routes from `routes` file",x)
+      logger.info("can't find default generated Routes from `routes` file. "+x.getMessage)
       if(conf.getOptional[Boolean]("micro.assert-default-routes").getOrElse(true)) {
         throw new Exception("can't load default generated Routes from `routes` file",x)
       }

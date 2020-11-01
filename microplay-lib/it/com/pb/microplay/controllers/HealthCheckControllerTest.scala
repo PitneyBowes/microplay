@@ -18,19 +18,18 @@ import play.api.test._
 class HealthCheckControllerTest extends PlayFakeAppSpecification{
   sequential
   "HealthCheckController" should {
-//    "health end point" in new WithApplication(getFakeApp) {
-    "health end point" in new WithApplication {
+    "health end point" in new WithApplication(getFakeApp) {
       val Some(result) = route(app, FakeRequest(GET, "/health"))
       status(result) mustEqual OK
       contentAsString(result) mustEqual "I'm Ok. Thanks for checking."
     }
 
-    "env end point" in new WithApplication {
+    "env end point" in new WithApplication(getFakeApp)  {
       val Some(result) = route(app, FakeRequest(GET, "/env"))
       status(result) mustEqual OK
-      contentAsString(result) mustEqual "default env"
+      contentAsString(result) mustEqual "this is test env"
     }
-    "build info status end point" in new WithApplication {
+    "build info status end point" in new WithApplication(getFakeApp)  {
       val Some(result) = route(app, FakeRequest(GET, "/status"))
       status(result) mustEqual OK
       contentAsString(result) must contain("\"buildTime\"")
