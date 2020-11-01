@@ -2,7 +2,7 @@ import java.time.{ZoneOffset, ZonedDateTime}
 
 name := "microplay"
 organization := "com.pb"
-version := sys.env.getOrElse("VERSION", "3.26.0-SNAPSHOT")
+version := sys.env.getOrElse("VERSION", "3.26.1-SNAPSHOT")
 scalaVersion := "2.12.8"
 bintrayRepository := "PB_Maven"
 bintrayPackage := "microplay"
